@@ -1,0 +1,62 @@
+{
+  "name": "@ewb/translator",
+  "version": "1.0.1",
+  "description": "Translate as you create your app. Saves the words in a tree structure for fast lookup.",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "scripts": {
+    "start": "yarn build:watch",
+    "build": "tsc",
+    "build:watch": "tsc --watch --incremental",
+    "lint": "tslint --project \"./tsconfig.json\"",
+    "test": "mocha --watch --watch-extensions ts -r ts-node/register test/**/*.spec.ts",
+    "postversion": "git push && git push --tags",
+    "prepublish": "npm run build",
+    "preversion": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EmilsWebbod/mongoose-export-import.git"
+  },
+  "keywords": [
+    "typescript",
+    "npm",
+    "mongoose",
+    "export",
+    "import"
+  ],
+  "author": "Emils Webbod",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EmilsWebbod/mongoose-export-import/issues"
+  },
+  "homepage": "https://github.com/EmilsWebbod/mongoose-export-import#readme",
+  "files": [
+    "lib"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.0",
+    "@types/mocha": "^5.2.7",
+    "chai": "^4.2.0",
+    "husky": "^3.0.5",
+    "mocha": "^6.2.0",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
+    "source-map-support": "^0.5.13",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.19.0",
+    "typescript": "^3.6.2",
+    "typings": "^2.1.1"
+  },
+  "peerDependencies": {},
+  "dependencies": {},
+  "resolutions": {
+    "@types/express": "^4.17.1",
+    "@types/mongoose": "^5.5.16"
+  }
+}
