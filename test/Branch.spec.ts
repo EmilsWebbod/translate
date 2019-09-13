@@ -19,11 +19,11 @@ describe('Branch', () => {
   });
 
   it('should add words to branch', () => {
-    assert.equal(branch.words.length, 3);
+    assert.equal(Object.keys(branch.words).length, 3);
   });
 
   it('should add words to children branches', () => {
-    assert.equal(branch.words[0].words.length, 2);
+    assert.equal(Object.keys(branch.words.b.words).length, 2);
   });
 
   it('should print out words', () => {
@@ -41,5 +41,11 @@ describe('Branch', () => {
 
   it('should fail to find word in list', () => {
     assert.isFalse(branch.find('abdc'));
+  });
+
+  xit('should add isWord only to last branch added', () => {
+    assert.isFalse(branch.isWord);
+    assert.isFalse(branch.words[0].isWord);
+    assert.isTrue(branch.words[0].words[0].isWord);
   });
 });

@@ -1,11 +1,19 @@
+export interface BranchObject {
+  [key: string]: Branch;
+}
+
 export default class Branch {
-  public words: Branch[] = [];
+  public words: BranchObject = {};
+  public isWord: boolean = false;
   public word: string;
 
   constructor(public level: number, word: string) {
     this.word = word.slice(0, this.level + 1);
-    if (word[level + 1]) {
-      this.words = [new Branch(this.level + 1, word)];
+    const char = this.getNextCharacter(word);
+    if (char) {
+      this.words[char] = new Branch(this.level + 1, word);
+    } else {
+      this.isWord = true;
     }
   }
 
@@ -14,16 +22,12 @@ export default class Branch {
       return false;
     }
 
-    let added = false;
-    for (const word of this.words) {
-      if (word.add(newWord)) {
-        added = true;
-        break;
-      }
-    }
+    const char = this.getNextCharacter(newWord);
 
-    if (!added && !this.words.some(x => this.matchWord.bind(x)(newWord))) {
-      this.words.push(new Branch(this.level + 1, newWord));
+    if (this.words[char]) {
+      this.words[char].add(newWord);
+    } else {
+      this.words[char] = new Branch(this.level + 1, newWord);
     }
 
     return true;
@@ -38,23 +42,40 @@ export default class Branch {
       return true;
     }
 
-    if (this.words.length) {
-      return this.words.some(x => x.find(word));
+    const char = word[this.level + 1];
+
+    if (this.words[char]) {
+      return this.words[char].find(word);
     }
 
     return false;
   }
 
   public wordCount(): number {
-    return this.words.reduce<number>((num, word) => num + word.wordCount(), 1);
+    let count = 1;
+    for (const key in this.words) {
+      if (this.words.hasOwnProperty(key)) {
+        count += this.words[key].wordCount();
+      }
+    }
+
+    return count;
   }
 
   public toString() {
     let str = `${this.level} ${this.word} \n`;
-    for (const word of this.words) {
-      str += word.toString();
+
+    for (const key in this.words) {
+      if (this.words.hasOwnProperty(key)) {
+        str += this.words[key].toString();
+      }
     }
+
     return str;
+  }
+
+  private getNextCharacter(word: string) {
+    return word[this.level + 1] ? word[this.level + 1].toLowerCase() : '';
   }
 
   private match(newWord: string) {
