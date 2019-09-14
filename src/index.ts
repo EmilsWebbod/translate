@@ -1,6 +1,6 @@
-import Tree, { WordTranslation } from './Tree';
+import Tree, { WordTranslation, TreeOptions } from './Tree';
 import Empty from './Empty';
-import Branch from './Branch';
+import Branch, { Translations, BranchObject } from './Branch';
 
 export interface TranslateOptions {
   defaultLocale: string;
@@ -103,4 +103,12 @@ export default class Translate {
   }
 }
 
-export { Tree, Branch, Translate, WordTranslation };
+export {
+  Tree,
+  Branch,
+  Translate,
+  WordTranslation,
+  TreeOptions,
+  Translations,
+  BranchObject
+};
