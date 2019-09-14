@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import Branch from '../src/Branch';
+import Empty from '../src/Empty';
 
 describe('Branch word', () => {
   let branch: Branch;
@@ -75,6 +76,24 @@ describe('Branch word', () => {
   it('should return suggestion branches', () => {
     const words = branch.suggestions();
     assert.equal(words.length, 5);
+  });
+
+  describe('Translations', () => {
+    it('should return Branch object if no translations found', () => {
+      const word = branch.find('abc');
+      const translation = word.translate('en');
+      assert.isObject(translation);
+    });
+
+    it('should add translation not found and added', () => {
+      const word = branch.find('abc');
+      const translation = word.translate('en');
+
+      if (translation instanceof Branch) {
+        translation.addTranslation('en', 'aaa');
+        assert.equal(word.translate('en'), 'aaa');
+      }
+    });
   });
 });
 

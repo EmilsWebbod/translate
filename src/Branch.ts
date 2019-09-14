@@ -1,5 +1,6 @@
 import Empty from './Empty';
-import { add } from './utils/array';
+import { add } from './utils/math';
+import { getWord, suggestions } from './utils/helpers';
 
 export interface BranchObject {
   [key: string]: Branch;
@@ -20,8 +21,9 @@ export default class Branch {
     word: string,
     public sentence: boolean = false
   ) {
-    this.word = this.getWord(word);
+    this.word = getWord(level, word, sentence);
     const char = this.getNextCharacter(word);
+
     if (char) {
       this.words[char] = new Branch(this.level + 1, word, sentence);
     } else {
@@ -68,13 +70,11 @@ export default class Branch {
   }
 
   public translate(locale: string) {
-    return this.translations[locale];
+    return this.translations[locale] || this;
   }
 
   public suggestions(): Branch[] {
-    return this.isWord
-      ? [this as Branch, ...this.map(x => x.suggestions())]
-      : this.map(x => x.suggestions()).flat();
+    return suggestions.bind(this)();
   }
 
   public wordCount(): number {
@@ -86,26 +86,8 @@ export default class Branch {
     return str + this.map(x => x.toString()).join('');
   }
 
-  private map(fn: (branch: Branch) => any) {
-    const arr = [];
-
-    for (const key in this.words) {
-      if (this.words.hasOwnProperty(key)) {
-        arr.push(fn(this.words[key]));
-      }
-    }
-
-    return arr;
-  }
-
-  private getWord(word: string) {
-    if (this.sentence) {
-      return word
-        .split(' ')
-        .slice(0, this.level + 1)
-        .join(' ');
-    }
-    return word.slice(0, this.level + 1);
+  public map(fn: (branch: Branch) => any) {
+    return Object.keys(this.words).map(k => fn(this.words[k]));
   }
 
   private getNextCharacter(word: string) {
