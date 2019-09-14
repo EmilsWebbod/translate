@@ -41,7 +41,12 @@ export default class Branch {
 
   public add(newWord: string, translations?: Translations) {
     if (this.match(newWord)) {
-      return false;
+      if (!this.isWord) {
+        this.isWord = true;
+        return true;
+      } else {
+        return false;
+      }
     }
 
     const char = this.getNextCharacter(newWord);
@@ -66,7 +71,7 @@ export default class Branch {
     }
 
     if (this.matchWord(word)) {
-      return this;
+      return this.isWord ? this : new Empty(this, word);
     }
 
     const char = this.getNextCharacter(word);

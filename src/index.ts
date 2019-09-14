@@ -9,7 +9,7 @@ export interface TranslateOptions {
   texts: WordTranslation[];
 }
 
-export interface FailFunctions {
+export interface FindOptions {
   locale?: string;
   noMatch?: (empty: Empty) => void;
   noTranslation?: (empty: Branch) => void;
@@ -37,7 +37,7 @@ export default class Translate {
 
   public word(
     word: string,
-    { noMatch, noTranslation, locale = this.locale }: FailFunctions = {}
+    { noMatch, noTranslation, locale = this.locale }: FindOptions = {}
   ) {
     if (this.defaultLocale === locale) {
       return word;
@@ -61,7 +61,7 @@ export default class Translate {
 
   public text(
     text: string,
-    { noMatch, noTranslation, locale = this.locale }: FailFunctions = {}
+    { noMatch, noTranslation, locale = this.locale }: FindOptions = {}
   ) {
     if (this.defaultLocale === locale) {
       return text;
@@ -102,3 +102,5 @@ export default class Translate {
     return this.tree.exportTexts();
   }
 }
+
+export { Tree, Branch, Translate, WordTranslation };

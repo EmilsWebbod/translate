@@ -1,4 +1,4 @@
-import Branch from './Branch';
+import Branch, { Translations } from './Branch';
 import Tree from './Tree';
 
 export default class Empty {
@@ -14,14 +14,14 @@ export default class Empty {
     return 'N/T';
   }
 
-  public add() {
+  public add(translations?: Translations) {
     if ('isWord' in this.branch) {
-      this.branch.add(this.addWord);
+      this.branch.add(this.addWord, translations);
     } else {
       if (this.isTreeText) {
-        this.branch.addText(this.addWord);
+        this.branch.addText(this.addWord, translations);
       } else {
-        this.branch.addWord(this.addWord);
+        this.branch.addWord(this.addWord, translations);
       }
     }
   }
