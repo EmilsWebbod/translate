@@ -8,9 +8,9 @@ If the `locale` is set to the same as default it will print the same text as the
 
 ## Helping libraries
 
-**NodeJS**: In the works  
-**React**: In the works  
-**Minfy Version**: Smaller version that takes the export object with only find functions
+**NodeJS**: In the works (Much work with how to update live)  
+**React**: [@ewb/react](https://github.com/EmilsWebbod/react-translate)  
+**Minfy Version**: Smaller version that takes the export object with only find functions (Will maybe create it. If anyone asks)
 
 ## Setup
 

@@ -2,8 +2,8 @@ import Tree, { WordTranslation, TreeOptions } from './Tree';
 import Empty from './Empty';
 import Branch, { Translations, BranchObject } from './Branch';
 
-type NoMatchFn = (empty: Empty) => void;
-type NoTranslationFn = (empty: Branch) => void;
+type NoMatchFn = (translate: Translate, empty: Empty) => void;
+type NoTranslationFn = (translate: Translate, empty: Branch) => void;
 export interface TranslateOptions {
   defaultLocale: string;
   locale: string;
@@ -62,7 +62,7 @@ export default class Translate {
         noMatch(foundWord);
       }
       if (typeof this.noMatch === 'function') {
-        this.noMatch(foundWord);
+        this.noMatch(this, foundWord);
       }
     }
 
@@ -74,7 +74,7 @@ export default class Translate {
       }
 
       if (typeof this.noTranslation === 'function') {
-        this.noTranslation(translated);
+        this.noTranslation(this, translated);
       }
 
       return 'N/T';
@@ -98,7 +98,7 @@ export default class Translate {
         noMatch(foundText);
       }
       if (typeof this.noMatch === 'function') {
-        this.noMatch(foundText);
+        this.noMatch(this, foundText);
       }
     }
 
@@ -110,7 +110,7 @@ export default class Translate {
       }
 
       if (typeof this.noTranslation === 'function') {
-        this.noTranslation(translated);
+        this.noTranslation(this, translated);
       }
 
       return 'N/T';
