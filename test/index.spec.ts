@@ -100,7 +100,7 @@ describe('Translation object', () => {
     });
 
     assert.isTrue(empty && empty instanceof Empty);
-    assert.equal(NT, 'N/T');
+    assert.equal(NT, 'N/W');
   });
 
   it('should run second function if text not found', () => {
@@ -115,7 +115,7 @@ describe('Translation object', () => {
     });
 
     assert.isTrue(empty && empty instanceof Empty);
-    assert.equal(NT, 'N/T');
+    assert.equal(NT, 'N/W');
   });
 
   describe('Export', () => {

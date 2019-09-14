@@ -2,11 +2,16 @@ import Tree, { WordTranslation, TreeOptions } from './Tree';
 import Empty from './Empty';
 import Branch, { Translations, BranchObject } from './Branch';
 
+type NoMatchFn = (empty: Empty) => void;
+type NoTranslationFn = (empty: Branch) => void;
 export interface TranslateOptions {
   defaultLocale: string;
   locale: string;
   words: WordTranslation[];
   texts: WordTranslation[];
+
+  noMatch?: NoMatchFn;
+  noTranslation?: NoTranslationFn;
 }
 
 export interface FindOptions {
@@ -20,14 +25,21 @@ export default class Translate {
   public locale: string;
   public tree: Tree;
 
+  private readonly noMatch: NoMatchFn | undefined;
+  private readonly noTranslation: NoTranslationFn | undefined;
+
   constructor({
     defaultLocale = 'en',
     locale = 'en',
     words = [],
-    texts = []
+    texts = [],
+    noMatch,
+    noTranslation
   }: TranslateOptions) {
     this.defaultLocale = defaultLocale;
     this.locale = locale;
+    this.noMatch = noMatch;
+    this.noTranslation = noTranslation;
 
     this.tree = new Tree({
       words,
@@ -45,15 +57,27 @@ export default class Translate {
 
     const foundWord = this.tree.word(word);
 
-    if (typeof noMatch === 'function' && foundWord instanceof Empty) {
-      noMatch(foundWord);
+    if (foundWord instanceof Empty) {
+      if (typeof noMatch === 'function') {
+        noMatch(foundWord);
+      }
+      if (typeof this.noMatch === 'function') {
+        this.noMatch(foundWord);
+      }
     }
 
     const translated = foundWord.translate(locale);
 
-    if (typeof noTranslation === 'function' && translated instanceof Branch) {
-      noTranslation(translated);
-      return 'N/W';
+    if (translated instanceof Branch) {
+      if (typeof noTranslation === 'function') {
+        noTranslation(translated);
+      }
+
+      if (typeof this.noTranslation === 'function') {
+        this.noTranslation(translated);
+      }
+
+      return 'N/T';
     }
 
     return translated;
@@ -69,15 +93,27 @@ export default class Translate {
 
     const foundText = this.tree.text(text);
 
-    if (typeof noMatch === 'function' && foundText instanceof Empty) {
-      noMatch(foundText);
+    if (foundText instanceof Empty) {
+      if (typeof noMatch === 'function') {
+        noMatch(foundText);
+      }
+      if (typeof this.noMatch === 'function') {
+        this.noMatch(foundText);
+      }
     }
 
     const translated = foundText.translate(locale);
 
-    if (typeof noTranslation === 'function' && translated instanceof Branch) {
-      noTranslation(translated);
-      return 'N/W';
+    if (translated instanceof Branch) {
+      if (typeof noTranslation === 'function') {
+        noTranslation(translated);
+      }
+
+      if (typeof this.noTranslation === 'function') {
+        this.noTranslation(translated);
+      }
+
+      return 'N/T';
     }
 
     return translated;
@@ -105,6 +141,7 @@ export default class Translate {
 
 export {
   Tree,
+  Empty,
   Branch,
   Translate,
   WordTranslation,

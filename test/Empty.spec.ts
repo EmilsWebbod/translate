@@ -26,8 +26,8 @@ describe('Empty', () => {
 
   it('should have function translate but should return no word', () => {
     assert.isFunction(empty.translate);
-    assert.equal(empty.translate('en'), 'N/T');
-    assert.equal(empty.translate('no'), 'N/T');
+    assert.equal(empty.translate('en'), 'N/W');
+    assert.equal(empty.translate('no'), 'N/W');
   });
 
   it('should have word saved if user want to add', () => {

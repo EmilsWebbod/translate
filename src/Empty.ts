@@ -11,7 +11,7 @@ export default class Empty {
   ) {}
 
   public translate(_: string) {
-    return 'N/T';
+    return 'N/W';
   }
 
   public add(translations?: Translations) {

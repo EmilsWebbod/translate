@@ -67,11 +67,11 @@ export default class Branch {
 
   public find(word: string): Branch | Empty {
     if (this.validateCharacters(word)) {
-      return new Empty(this, word);
+      return new Empty(this, word, this.sentence);
     }
 
     if (this.matchWord(word)) {
-      return this.isWord ? this : new Empty(this, word);
+      return this.isWord ? this : new Empty(this, word, this.sentence);
     }
 
     const char = this.getNextCharacter(word);
@@ -80,7 +80,7 @@ export default class Branch {
       return this.words[char].find(word);
     }
 
-    return new Empty(this, word);
+    return new Empty(this, word, this.sentence);
   }
 
   public addTranslation(locale: string, translation: string) {
