@@ -1,17 +1,40 @@
 import { assert } from 'chai';
 import Branch from '../src/Branch';
-import Empty from '../src/Empty';
+import { WordTranslation } from '../src/Tree';
+
+const words: WordTranslation[] = [
+  {
+    word: 'Abc',
+    translations: {}
+  },
+  {
+    word: 'Abcd',
+    translations: {}
+  },
+  {
+    word: 'Abd',
+    translations: {}
+  },
+  {
+    word: 'Acd',
+    translations: {}
+  },
+  {
+    word: 'Adc',
+    translations: {}
+  }
+];
 
 describe('Branch word', () => {
   let branch: Branch;
 
   beforeEach(() => {
-    branch = new Branch(0, 'Abc');
-    branch.add('Adc');
-    branch.add('Acd');
-    branch.add('Abd');
-    branch.add('Abcd');
-    branch.add('Abc');
+    branch = new Branch(0, words[0].word);
+    branch.add(words[4].word);
+    branch.add(words[3].word);
+    branch.add(words[2].word);
+    branch.add(words[1].word);
+    branch.add(words[0].word);
   });
 
   it('should be a class', () => {
@@ -19,11 +42,11 @@ describe('Branch word', () => {
   });
 
   it('should add words to branch', () => {
-    assert.equal(Object.keys(branch.words).length, 3);
+    assert.lengthOf(Object.keys(branch.words), 3);
   });
 
   it('should add words to children branches', () => {
-    assert.equal(Object.keys(branch.words.b.words).length, 2);
+    assert.lengthOf(Object.keys(branch.words.b.words), 2);
   });
 
   it('should print out words', () => {
@@ -74,8 +97,16 @@ describe('Branch word', () => {
   });
 
   it('should return suggestion branches', () => {
-    const words = branch.suggestions();
-    assert.equal(words.length, 5);
+    const suggestions = branch.suggestions();
+    assert.lengthOf(suggestions, 5);
+  });
+
+  it('should export words to object', () => {
+    const exported = branch.export();
+    for (const word of words) {
+      const found = exported.find(x => x.word === word.word);
+      assert.deepEqual(found, word);
+    }
   });
 
   describe('Translations', () => {
@@ -85,7 +116,7 @@ describe('Branch word', () => {
       assert.isObject(translation);
     });
 
-    it('should add translation not found and added', () => {
+    it('should add translation if not found and added', () => {
       const word = branch.find('abc');
       const translation = word.translate('en');
 
@@ -109,7 +140,7 @@ describe('Branch sentence', () => {
   });
 
   it('should add sentence and split up with words', () => {
-    assert.equal(Object.keys(branch.words).length, 3);
+    assert.lengthOf(Object.keys(branch.words), 3);
     assert.equal(branch.word, 'Hei');
     assert.equal(branch.words.dette.word, 'Hei dette');
   });

@@ -20,14 +20,14 @@ describe('Tree', () => {
   });
 
   it('should add word as branches', () => {
-    assert.equal(Object.keys(tree.words).length, 3);
+    assert.lengthOf(Object.keys(tree.words), 3);
     tree.addWord('Word');
-    assert.equal(Object.keys(tree.words).length, 4);
+    assert.lengthOf(Object.keys(tree.words), 4);
   });
 
   it('should add text to list and split up with words', () => {
     assert.isObject(tree.texts);
-    assert.equal(Object.keys(tree.texts).length, 2);
+    assert.lengthOf(Object.keys(tree.texts), 2);
   });
 
   it('should add sentence to object', () => {
@@ -40,13 +40,13 @@ describe('Tree', () => {
   });
 
   it('should find sentence', () => {
-    const found = tree.text('Dette funker');
+    const found = tree.text('This works');
     assert.exists(found.word);
   });
 
   it('should return Empty object if not found', () => {
-    const text = tree.text('Ingen match');
-    const word = tree.text('Ingen');
+    const text = tree.text('No match');
+    const word = tree.text('No');
     assert.exists(text);
     assert.exists(word);
     assert.equal(text.constructor.name, 'Empty');
@@ -54,11 +54,11 @@ describe('Tree', () => {
   });
 
   it('should add text if not found', () => {
-    const found = tree.text('Ingen match');
+    const found = tree.text('No match');
 
     if (found instanceof Empty) {
       found.add();
-      const again = tree.text('Ingen match');
+      const again = tree.text('No match');
       assert.exists(again.word);
     } else {
       assert.fail();
@@ -66,14 +66,26 @@ describe('Tree', () => {
   });
 
   it('should add word if not found', () => {
-    const found = tree.word('Ingen');
+    const found = tree.word('None');
 
     if (found instanceof Empty) {
       found.add();
-      const again = tree.word('Ingen');
+      const again = tree.word('None');
       assert.exists(again.word);
     } else {
       assert.fail();
     }
+  });
+
+  it('should export words', () => {
+    const exported = tree.exportWords();
+    assert.isArray(exported);
+    assert.lengthOf(exported, defaultOptions.words.length);
+  });
+
+  it('should export texts', () => {
+    const exported = tree.exportTexts();
+    assert.isArray(exported);
+    assert.lengthOf(exported, defaultOptions.texts.length);
   });
 });

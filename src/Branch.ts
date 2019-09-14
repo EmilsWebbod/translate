@@ -1,6 +1,7 @@
 import Empty from './Empty';
 import { add } from './utils/math';
 import { getWord, suggestions } from './utils/helpers';
+import { WordTranslation } from './Tree';
 
 export interface BranchObject {
   [key: string]: Branch;
@@ -19,19 +20,26 @@ export default class Branch {
   constructor(
     public level: number,
     word: string,
-    public sentence: boolean = false
+    public sentence: boolean = false,
+    translations: Translations = {}
   ) {
     this.word = getWord(level, word, sentence);
     const char = this.getNextCharacter(word);
 
     if (char) {
-      this.words[char] = new Branch(this.level + 1, word, sentence);
+      this.words[char] = new Branch(
+        this.level + 1,
+        word,
+        sentence,
+        translations
+      );
     } else {
+      this.translations = translations;
       this.isWord = true;
     }
   }
 
-  public add(newWord: string) {
+  public add(newWord: string, translations?: Translations) {
     if (this.match(newWord)) {
       return false;
     }
@@ -39,9 +47,14 @@ export default class Branch {
     const char = this.getNextCharacter(newWord);
 
     if (this.words[char]) {
-      this.words[char].add(newWord);
+      this.words[char].add(newWord, translations);
     } else {
-      this.words[char] = new Branch(this.level + 1, newWord, this.sentence);
+      this.words[char] = new Branch(
+        this.level + 1,
+        newWord,
+        this.sentence,
+        translations
+      );
     }
 
     return true;
@@ -79,6 +92,18 @@ export default class Branch {
 
   public wordCount(): number {
     return this.map(x => x.wordCount()).reduce(add, 0) + 1;
+  }
+
+  public export(): WordTranslation[] {
+    return this.isWord
+      ? [
+          {
+            word: this.word,
+            translations: this.translations
+          },
+          ...this.map(x => x.export()).flat()
+        ]
+      : this.map(x => x.export()).flat();
   }
 
   public toString(): string {

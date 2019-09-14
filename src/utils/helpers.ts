@@ -15,3 +15,10 @@ export function suggestions(this: Branch) {
     ? [this as Branch, ...this.map(x => x.suggestions())]
     : this.map(x => x.suggestions()).flat();
 }
+
+export function getFirst(word: string, isText = false) {
+  if (isText) {
+    return word.split(' ')[0].toLowerCase();
+  }
+  return word[0].toLowerCase();
+}

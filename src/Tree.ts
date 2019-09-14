@@ -1,11 +1,15 @@
-import Branch, { BranchObject } from './Branch';
+import Branch, { BranchObject, Translations } from './Branch';
 import Empty from './Empty';
-import { suggestions } from './utils/helpers';
+import { getFirst } from './utils/helpers';
+
+export interface WordTranslation {
+  word: string;
+  translations: Translations;
+}
 
 export interface TreeOptions {
-  words?: string[];
-  texts?: string[];
-  sentence?: boolean;
+  words?: WordTranslation[];
+  texts?: WordTranslation[];
 }
 
 export default class Tree {
@@ -14,49 +18,43 @@ export default class Tree {
 
   constructor({ words = [], texts = [] }: TreeOptions) {
     for (const word of words) {
-      this.addWord(word);
+      this.addWord(word.word, word.translations);
     }
 
     for (const text of texts) {
-      this.addText(text);
+      this.addText(text.word, text.translations);
     }
   }
 
-  public addWord(word: string) {
-    const char = this.getFirst(word);
+  public addWord(word: string, translations?: Translations) {
+    const char = getFirst(word);
 
     if (this.words[char]) {
-      this.words[char].add(word);
+      this.words[char].add(word, translations);
     } else {
-      this.words[char] = new Branch(0, word);
+      this.words[char] = new Branch(0, word, false, translations);
     }
   }
 
-  public addText(text: string) {
-    const word = this.getFirst(text, true);
+  public addText(text: string, translations?: Translations) {
+    const word = getFirst(text, true);
 
     if (this.texts[word]) {
-      this.texts[word].add(text);
+      this.texts[word].add(text, translations);
     } else {
-      this.texts[word] = new Branch(0, text, true);
+      this.texts[word] = new Branch(0, text, true, translations);
     }
   }
 
-  public w(word: string) {
-    return this.word(word);
-  }
   public word(word: string): Branch | Empty {
-    const char = this.getFirst(word);
+    const char = getFirst(word);
     return this.words[char]
       ? this.words[char].find(word)
       : new Empty(this, word);
   }
 
-  public t(text: string) {
-    return this.text(text);
-  }
   public text(text: string): Branch | Empty {
-    const word = this.getFirst(text, true);
+    const word = getFirst(text, true);
     return this.texts[word]
       ? this.texts[word].find(text)
       : new Empty(this, text, true);
@@ -68,11 +66,12 @@ export default class Tree {
       : this.wordMap(x => x.suggestions()).flat();
   }
 
-  private getFirst(word: string, sentence = false) {
-    if (sentence) {
-      return word.split(' ')[0].toLowerCase();
-    }
-    return word[0].toLowerCase();
+  public exportWords() {
+    return this.wordMap(x => x.export()).flat();
+  }
+
+  public exportTexts() {
+    return this.textMap(x => x.export()).flat();
   }
 
   private wordMap<T extends any>(fn: (branch: Branch) => T) {

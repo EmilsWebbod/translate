@@ -7,10 +7,10 @@ export default class Empty {
   constructor(
     public branch: Branch | Tree,
     public addWord: string,
-    public treeSentence = false
+    public isTreeText = false
   ) {}
 
-  public translate(locale: string) {
+  public translate(_: string) {
     return 'N/T';
   }
 
@@ -18,7 +18,7 @@ export default class Empty {
     if ('isWord' in this.branch) {
       this.branch.add(this.addWord);
     } else {
-      if (this.treeSentence) {
+      if (this.isTreeText) {
         this.branch.addText(this.addWord);
       } else {
         this.branch.addWord(this.addWord);
@@ -32,7 +32,7 @@ export default class Empty {
     if ('isWord' in this.branch) {
       words = this.branch.suggestions();
     } else {
-      words = this.branch.suggestions(this.treeSentence);
+      words = this.branch.suggestions(this.isTreeText);
     }
 
     return words.map(x => x.word).join(', ');
