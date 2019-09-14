@@ -1,4 +1,5 @@
 import Empty from './Empty';
+import { add } from './utils/array';
 
 export interface BranchObject {
   [key: string]: Branch;
@@ -71,42 +72,30 @@ export default class Branch {
   }
 
   public suggestions(): Branch[] {
-    let sug = [];
-
-    if (this.isWord) {
-      sug.push(this as Branch);
-    }
-
-    for (const key in this.words) {
-      if (this.words.hasOwnProperty(key)) {
-        sug = [...sug, ...this.words[key].suggestions()];
-      }
-    }
-
-    return sug;
+    return this.isWord
+      ? [this as Branch, ...this.map(x => x.suggestions())]
+      : this.map(x => x.suggestions()).flat();
   }
 
   public wordCount(): number {
-    let count = 1;
-    for (const key in this.words) {
-      if (this.words.hasOwnProperty(key)) {
-        count += this.words[key].wordCount();
-      }
-    }
-
-    return count;
+    return this.map(x => x.wordCount()).reduce(add, 0) + 1;
   }
 
-  public toString() {
-    let str = `${this.level} ${this.word} \n`;
+  public toString(): string {
+    const str = `${this.level} ${this.word} \n`;
+    return str + this.map(x => x.toString()).join('');
+  }
+
+  private map(fn: (branch: Branch) => any) {
+    const arr = [];
 
     for (const key in this.words) {
       if (this.words.hasOwnProperty(key)) {
-        str += this.words[key].toString();
+        arr.push(fn(this.words[key]));
       }
     }
 
-    return str;
+    return arr;
   }
 
   private getWord(word: string) {

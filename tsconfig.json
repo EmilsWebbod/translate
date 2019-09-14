@@ -9,7 +9,7 @@
     "strict": true,
     "jsx": "react",
     "sourceMap": true,
-    "lib": ["dom", "es7"],
+    "lib": ["dom", "es7", "es2019"],
     "skipLibCheck": true
   },
   "include": ["src"],
