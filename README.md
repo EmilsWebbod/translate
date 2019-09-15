@@ -79,8 +79,8 @@ If Locale is the same as `defaultLocale` it will return the same text as input.
 translation.word('Word'); // Ord
 translation.text('This is a sentence'); // Dette er en setning
 
-translation.word('Word', { locale: 'en' }); // Word
-translation.text('This is a sentence', { locale: 'en' }); // Dette er en setning
+translation.word('Word', 'en'); // Word
+translation.text('This is a sentence', 'en'); // Dette er en setning
 
 translation.setLocale('en');
 translation.word('Worry') // Worry
@@ -99,10 +99,12 @@ Translations will only give valid match if branch is marked as isWord.
 All other mismatches will return Empty object or Branch object in option functions
 
 ```
-tranlsate('No match', {
-    noWord: (empty: Empty) => { ... Handle 'N/W' },
-    noTranslation: (branch: Branch) => { ... Handle 'N/T' }
+new Translate({
+    ....,
+    noWord: (translate: Translate, empty: Empty) => { ... Handle 'N/W' },
+    noTranslation: (translate: Translate, branch: Branch) => { ... Handle 'N/T' }
 })
+tranlsate('No match')
 ```
 
 ### noWord: Empty
@@ -133,19 +135,17 @@ interface Translations {
 interface TranslateOptions {
   defaultLocale: string;
   locale: string;
+
   words: WordTranslation[];
   texts: WordTranslation[];
-}
 
-interface FindOptions {
-  locale?: string;
-  noMatch?: (empty: Empty) => void;
-  noTranslation?: (empty: Branch) => void;
+  noMatch?: (translate: Translate, empty: Empty) => void;
+  noTranslation?: (translate: Translate, empty: Branch) => void;
 }
 
 interface ExportData {
-    words: WordTranslation[];
-    texts: WordTranslation[];
+  words: WordTranslation[];
+  texts: WordTranslation[];
 }
 
 export interface TreeOptions {
@@ -157,9 +157,9 @@ export interface TreeOptions {
 ## Class definitions
 
 ```
-class Translation {
-    word(word: string, options?: FindOptions): string;
-    text(text: string, options?: FindOptions): string;
+class Translate {
+    word(word: string, locale?: string): string;
+    text(text: string, locale?: string): string;
     changeLocale(locale: string): void;
     export(): ExportData;
     exportWords(): WordTranslation[];

@@ -74,45 +74,37 @@ describe('Translation object', () => {
 
   it('should return word translation on changed option locale', () => {
     const word = defaultOptions.words[0];
-    assert.equal(
-      translate.word(word.word, { locale: 'se' }),
-      word.translations['se']
-    );
+    assert.equal(translate.word(word.word, 'se'), word.translations['se']);
   });
 
   it('should return text translation on changed option locale', () => {
     const text = defaultOptions.texts[0];
-    assert.equal(
-      translate.text(text.word, { locale: 'se' }),
-      text.translations['se']
-    );
+    assert.equal(translate.text(text.word, 'se'), text.translations['se']);
   });
 
-  it('should run second function if word not found', () => {
+  it('should run noMatch function if word not found', () => {
     let empty: any;
-    const NT = translate.word('No', {
-      noMatch: e => {
-        empty = e;
-      },
-      noTranslation: e => {
-        empty = e;
+    const _translate = new Translate({
+      ...defaultOptions,
+      noMatch: (_, empty1) => {
+        empty = empty1;
       }
     });
+    const NT = _translate.word('No');
 
     assert.isTrue(empty && empty instanceof Empty);
     assert.equal(NT, 'N/W');
   });
 
-  it('should run second function if text not found', () => {
+  it('should run noMatch function if text not found', () => {
     let empty: any;
-    const NT = translate.text('No translations', {
-      noMatch: e => {
-        empty = e;
-      },
-      noTranslation: e => {
-        empty = e;
+    const _translate = new Translate({
+      ...defaultOptions,
+      noMatch: (_, empty1) => {
+        empty = empty1;
       }
     });
+    const NT = _translate.text('No translations');
 
     assert.isTrue(empty && empty instanceof Empty);
     assert.equal(NT, 'N/W');

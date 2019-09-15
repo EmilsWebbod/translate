@@ -47,76 +47,24 @@ export default class Translate {
     });
   }
 
-  public word(
-    word: string,
-    { noMatch, noTranslation, locale = this.locale }: FindOptions = {}
-  ) {
+  public word(word: string, locale = this.locale) {
     if (this.defaultLocale === locale) {
       return word;
     }
 
     const foundWord = this.tree.word(word);
 
-    if (foundWord instanceof Empty) {
-      if (typeof noMatch === 'function') {
-        noMatch(foundWord);
-      }
-      if (typeof this.noMatch === 'function') {
-        this.noMatch(this, foundWord);
-      }
-    }
-
-    const translated = foundWord.translate(locale);
-
-    if (translated instanceof Branch) {
-      if (typeof noTranslation === 'function') {
-        noTranslation(translated);
-      }
-
-      if (typeof this.noTranslation === 'function') {
-        this.noTranslation(this, translated);
-      }
-
-      return 'N/T';
-    }
-
-    return translated;
+    return this.translateAndRunNoMatch(foundWord, locale);
   }
 
-  public text(
-    text: string,
-    { noMatch, noTranslation, locale = this.locale }: FindOptions = {}
-  ) {
+  public text(text: string, locale = this.locale) {
     if (this.defaultLocale === locale) {
       return text;
     }
 
     const foundText = this.tree.text(text);
 
-    if (foundText instanceof Empty) {
-      if (typeof noMatch === 'function') {
-        noMatch(foundText);
-      }
-      if (typeof this.noMatch === 'function') {
-        this.noMatch(this, foundText);
-      }
-    }
-
-    const translated = foundText.translate(locale);
-
-    if (translated instanceof Branch) {
-      if (typeof noTranslation === 'function') {
-        noTranslation(translated);
-      }
-
-      if (typeof this.noTranslation === 'function') {
-        this.noTranslation(this, translated);
-      }
-
-      return 'N/T';
-    }
-
-    return translated;
+    return this.translateAndRunNoMatch(foundText, locale);
   }
 
   public changeLocale(locale: string) {
@@ -136,6 +84,26 @@ export default class Translate {
 
   public exportTexts() {
     return this.tree.exportTexts();
+  }
+
+  private translateAndRunNoMatch(foundText: Branch | Empty, locale: string) {
+    if (foundText instanceof Empty) {
+      if (typeof this.noMatch === 'function') {
+        this.noMatch(this, foundText);
+      }
+    }
+
+    const translated = foundText.translate(locale);
+
+    if (translated instanceof Branch) {
+      if (typeof this.noTranslation === 'function') {
+        this.noTranslation(this, translated);
+      }
+
+      return 'N/T';
+    }
+
+    return translated;
   }
 }
 
