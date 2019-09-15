@@ -18,28 +18,22 @@ If the `locale` is set to the same as default it will print the same text as the
 const translation = new Translation({
     defaultLocale: 'en',
     locale: 'no-nb',
-    words: [{
-        word: 'Word',
-        translations: {
+    words: {
+        Word: {
             'no-nb': 'Ord'
-        }
-    },{
-        word: 'Worry',
-        translations: {
+        },
+        Worry: {
             'no-nb': 'Bekymre'
         }
-    }],
-    texts: [{
-        word: 'This is a sentence',
-        translations: {
+    },
+    texts: {
+        'This is a sentence': {
             'no-nb': 'Dette er en setning'
-        }
-    }, {
-        word: 'This is not a sentence',
-        translations: {
+        },
+        'This is not a sentence': {
             'no-nb': 'Dette er ikke en setning'
         }
-    }]
+    }
 })
 ```
 
@@ -123,9 +117,10 @@ So running `empty.add()` or `branch.addTranlsation()` will not save value persis
 ## Interfaces
 
 ```
-interface WordTranslation {
-  word: string;
-  translations: Translations;
+interface WordTranslations {
+  [key: string]: {
+    [key: string]: string;
+  };
 }
 
 interface Translations {
@@ -136,21 +131,21 @@ interface TranslateOptions {
   defaultLocale: string;
   locale: string;
 
-  words: WordTranslation[];
-  texts: WordTranslation[];
+  words: WordTranslations;
+  texts: WordTranslations;
 
   noMatch?: (translate: Translate, empty: Empty) => void;
   noTranslation?: (translate: Translate, empty: Branch) => void;
 }
 
 interface ExportData {
-  words: WordTranslation[];
-  texts: WordTranslation[];
+  words: WordTranslations;
+  texts: WordTranslations;
 }
 
 export interface TreeOptions {
-  words?: WordTranslation[];
-  texts?: WordTranslation[];
+  words?: WordTranslations;
+  texts?: WordTranslations;
 }
 ```
 
