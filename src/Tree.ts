@@ -1,29 +1,25 @@
 import Branch, { BranchObject, Translations } from './Branch';
 import Empty from './Empty';
-import { getFirst } from './utils/helpers';
+import { arrayToObject, getFirst } from './utils/helpers';
 
-export interface WordTranslation {
-  word: string;
-  translations: Translations;
+export interface WordTranslations {
+  [key: string]: {
+    [key: string]: string;
+  };
 }
 
 export interface TreeOptions {
-  words?: WordTranslation[];
-  texts?: WordTranslation[];
+  words?: WordTranslations;
+  texts?: WordTranslations;
 }
 
 export default class Tree {
   public words: BranchObject = {};
   public texts: BranchObject = {};
 
-  constructor({ words = [], texts = [] }: TreeOptions) {
-    for (const word of words) {
-      this.addWord(word.word, word.translations);
-    }
-
-    for (const text of texts) {
-      this.addText(text.word, text.translations);
-    }
+  constructor({ words = {}, texts = {} }: TreeOptions) {
+    Object.keys(words).map(k => this.addWord(k, words[k]));
+    Object.keys(texts).map(k => this.addText(k, texts[k]));
   }
 
   public addWord(word: string, translations?: Translations) {
@@ -67,11 +63,11 @@ export default class Tree {
   }
 
   public exportWords() {
-    return this.wordMap(x => x.export()).flat();
+    return this.wordMap(x => x.export()).reduce(arrayToObject, {});
   }
 
   public exportTexts() {
-    return this.textMap(x => x.export()).flat();
+    return this.textMap(x => x.export()).reduce(arrayToObject, {});
   }
 
   private wordMap<T extends any>(fn: (branch: Branch) => T) {

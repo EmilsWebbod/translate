@@ -1,40 +1,21 @@
 import { assert } from 'chai';
 import Branch from '../src/Branch';
-import { WordTranslation } from '../src/Tree';
+import { WordTranslations } from '../src';
 
-const words: WordTranslation[] = [
-  {
-    word: 'Abc',
-    translations: {}
-  },
-  {
-    word: 'Abcd',
-    translations: {}
-  },
-  {
-    word: 'Abd',
-    translations: {}
-  },
-  {
-    word: 'Acd',
-    translations: {}
-  },
-  {
-    word: 'Adc',
-    translations: {}
-  }
-];
+const words: WordTranslations = {
+  Abc: {},
+  Abcd: {},
+  Abd: {},
+  Acd: {},
+  Adc: {}
+};
 
 describe('Branch word', () => {
   let branch: Branch;
 
   beforeEach(() => {
-    branch = new Branch(0, words[0].word);
-    branch.add(words[4].word);
-    branch.add(words[3].word);
-    branch.add(words[2].word);
-    branch.add(words[1].word);
-    branch.add(words[0].word);
+    branch = new Branch(0, 'Abc');
+    Object.keys(words).map(k => branch.add(k));
   });
 
   it('should be a class', () => {
@@ -103,10 +84,10 @@ describe('Branch word', () => {
 
   it('should export words to object', () => {
     const exported = branch.export();
-    for (const word of words) {
-      const found = exported.find(x => x.word === word.word);
-      assert.deepEqual(found, word);
-    }
+    Object.keys(words).map(x => {
+      const found = exported[x];
+      assert.deepEqual(found, words[x]);
+    });
   });
 
   describe('Translations', () => {

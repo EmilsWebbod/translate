@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import Translate, { TranslateOptions } from '../src';
+import Translate, { Branch, TranslateOptions } from '../src';
 import { texts, words } from './mocks';
 import Empty from '../src/Empty';
 
@@ -21,14 +21,17 @@ describe('Default translation', () => {
   });
 
   it('should return default translation', () => {
-    const word = defaultOptions.words[0].word;
-    const translated = translate.word(word);
-    assert.equal(translated, word);
+    const translated = translate.word('Test');
+    assert.equal(translated, 'Test');
   });
 });
 
 describe('Translation object', () => {
   let translate: Translate;
+  const wordsLength = Object.keys(words).length;
+  const textsLength = Object.keys(texts).length;
+  const wordKey = 'Test';
+  const textKey = 'This is a test';
 
   beforeEach(() => {
     translate = new Translate(defaultOptions);
@@ -49,37 +52,37 @@ describe('Translation object', () => {
   });
 
   it('should find word and translations', () => {
-    const checkWord = defaultOptions.words[1];
-    const word = translate.word(checkWord.word);
-    assert.equal(word, checkWord.translations['no-nb']);
+    const checkWord = defaultOptions.words[wordKey];
+    const word = translate.word(wordKey);
+    assert.equal(word, checkWord['no-nb']);
   });
 
   it('should find text and translations', () => {
-    const checkText = defaultOptions.texts[1];
-    const text = translate.text(checkText.word);
-    assert.equal(text, checkText.translations['no-nb']);
+    const checkText = defaultOptions.texts[textKey];
+    const text = translate.text(textKey);
+    assert.equal(text, checkText['no-nb']);
   });
 
   it('should be able to change language', () => {
-    const word = defaultOptions.words[0];
-    const text = defaultOptions.texts[0];
+    const word = defaultOptions.words[wordKey];
+    const text = defaultOptions.texts[textKey];
 
-    assert.equal(translate.word(word.word), word.translations['no-nb']);
-    assert.equal(translate.text(text.word), text.translations['no-nb']);
+    assert.equal(translate.word(wordKey), word['no-nb']);
+    assert.equal(translate.text(textKey), text['no-nb']);
 
     translate.changeLocale('se');
-    assert.equal(translate.word(word.word), word.translations['se']);
-    assert.equal(translate.text(text.word), text.translations['se']);
+    assert.equal(translate.word(wordKey), word['se']);
+    assert.equal(translate.text(textKey), text['se']);
   });
 
   it('should return word translation on changed option locale', () => {
-    const word = defaultOptions.words[0];
-    assert.equal(translate.word(word.word, 'se'), word.translations['se']);
+    const word = defaultOptions.words[wordKey];
+    assert.equal(translate.word(wordKey, 'se'), word['se']);
   });
 
   it('should return text translation on changed option locale', () => {
-    const text = defaultOptions.texts[0];
-    assert.equal(translate.text(text.word, 'se'), text.translations['se']);
+    const text = defaultOptions.texts[textKey];
+    assert.equal(translate.text(textKey, 'se'), text['se']);
   });
 
   it('should run noMatch function if word not found', () => {
@@ -90,10 +93,10 @@ describe('Translation object', () => {
         empty = empty1;
       }
     });
-    const NT = _translate.word('No');
+    const NW = _translate.word('No');
 
     assert.isTrue(empty && empty instanceof Empty);
-    assert.equal(NT, 'N/W');
+    assert.equal(NW, 'N/W');
   });
 
   it('should run noMatch function if text not found', () => {
@@ -104,29 +107,57 @@ describe('Translation object', () => {
         empty = empty1;
       }
     });
-    const NT = _translate.text('No translations');
+    const NW = _translate.text('No translations');
 
     assert.isTrue(empty && empty instanceof Empty);
-    assert.equal(NT, 'N/W');
+    assert.equal(NW, 'N/W');
+  });
+
+  it('should run NoTranslation function if translation not found', () => {
+    let branch: any;
+    const _translate = new Translate({
+      ...defaultOptions,
+      noTranslation: (_, branch1) => {
+        branch = branch1;
+      }
+    });
+    const NT = _translate.word('Test', 'us');
+
+    assert.isTrue(branch && branch instanceof Branch);
+    assert.equal(NT, 'N/T');
+  });
+
+  it('should run noMatch function if text not found', () => {
+    let branch: any;
+    const _translate = new Translate({
+      ...defaultOptions,
+      noTranslation: (_, branch1) => {
+        branch = branch1;
+      }
+    });
+    const NT = _translate.text('This is a test', 'us');
+
+    assert.isTrue(branch && branch instanceof Branch);
+    assert.equal(NT, 'N/T');
   });
 
   describe('Export', () => {
     it('should export words to the same import object', () => {
       const exported = translate.exportWords();
-      assert.lengthOf(exported, defaultOptions.words.length);
-      assert.deepEqual(exported[0], defaultOptions.words[0]);
+      assert.lengthOf(Object.keys(exported), wordsLength);
+      assert.deepEqual(exported[wordKey], defaultOptions.words[wordKey]);
     });
 
     it('should export text to the same import object', () => {
       const exported = translate.exportTexts();
-      assert.lengthOf(exported, defaultOptions.texts.length);
-      assert.deepEqual(exported[0], defaultOptions.texts[0]);
+      assert.lengthOf(Object.keys(exported), textsLength);
+      assert.deepEqual(exported[textKey], defaultOptions.texts[textKey]);
     });
 
     it('should export text and words', () => {
       const exported = translate.export();
-      assert.lengthOf(exported.words, defaultOptions.words.length);
-      assert.lengthOf(exported.texts, defaultOptions.texts.length);
+      assert.deepEqual(exported.words, words);
+      assert.deepEqual(exported.texts, texts);
     });
 
     it('should create the same translation object with exported data', () => {

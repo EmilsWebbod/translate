@@ -1,4 +1,4 @@
-import Tree, { WordTranslation, TreeOptions } from './Tree';
+import Tree, { WordTranslations, TreeOptions } from './Tree';
 import Empty from './Empty';
 import Branch, { Translations, BranchObject } from './Branch';
 
@@ -7,17 +7,11 @@ type NoTranslationFn = (translate: Translate, empty: Branch) => void;
 export interface TranslateOptions {
   defaultLocale: string;
   locale: string;
-  words: WordTranslation[];
-  texts: WordTranslation[];
+  words: WordTranslations;
+  texts: WordTranslations;
 
   noMatch?: NoMatchFn;
   noTranslation?: NoTranslationFn;
-}
-
-export interface FindOptions {
-  locale?: string;
-  noMatch?: (empty: Empty) => void;
-  noTranslation?: (empty: Branch) => void;
 }
 
 export default class Translate {
@@ -31,8 +25,8 @@ export default class Translate {
   constructor({
     defaultLocale = 'en',
     locale = 'en',
-    words = [],
-    texts = [],
+    words = {},
+    texts = {},
     noMatch,
     noTranslation
   }: TranslateOptions) {
@@ -112,7 +106,7 @@ export {
   Empty,
   Branch,
   Translate,
-  WordTranslation,
+  WordTranslations,
   TreeOptions,
   Translations,
   BranchObject

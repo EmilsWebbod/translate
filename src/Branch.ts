@@ -1,7 +1,7 @@
 import Empty from './Empty';
 import { add } from './utils/math';
-import { getWord, suggestions } from './utils/helpers';
-import { WordTranslation } from './Tree';
+import { arrayToObject, getWord, suggestions } from './utils/helpers';
+import { WordTranslations } from './Tree';
 
 export interface BranchObject {
   [key: string]: Branch;
@@ -66,7 +66,7 @@ export default class Branch {
   }
 
   public find(word: string): Branch | Empty {
-    if (this.validateCharacters(word)) {
+    if (this.isInvalid(word)) {
       return new Empty(this, word, this.sentence);
     }
 
@@ -99,16 +99,13 @@ export default class Branch {
     return this.map(x => x.wordCount()).reduce(add, 0) + 1;
   }
 
-  public export(): WordTranslation[] {
+  public export(): WordTranslations {
     return this.isWord
-      ? [
-          {
-            word: this.word,
-            translations: this.translations
-          },
-          ...this.map(x => x.export()).flat()
-        ]
-      : this.map(x => x.export()).flat();
+      ? {
+          [this.word]: this.translations,
+          ...this.map(x => x.export()).reduce(arrayToObject, {})
+        }
+      : this.map(x => x.export()).reduce(arrayToObject, {});
   }
 
   public toString(): string {
@@ -130,10 +127,10 @@ export default class Branch {
   }
 
   private match(newWord: string) {
-    return this.matchWord(newWord) || this.validateCharacters(newWord);
+    return this.matchWord(newWord) || this.isInvalid(newWord);
   }
 
-  private validateCharacters(newWord: string) {
+  private isInvalid(newWord: string) {
     let w;
     let nw;
 

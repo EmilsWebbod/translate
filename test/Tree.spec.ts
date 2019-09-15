@@ -79,13 +79,13 @@ describe('Tree', () => {
 
   it('should export words', () => {
     const exported = tree.exportWords();
-    assert.isArray(exported);
-    assert.lengthOf(exported, defaultOptions.words.length);
+    assert.isObject(exported);
+    assert.deepEqual(exported, defaultOptions.words);
   });
 
   it('should export texts', () => {
     const exported = tree.exportTexts();
-    assert.isArray(exported);
-    assert.lengthOf(exported, defaultOptions.texts.length);
+    assert.isObject(exported);
+    assert.deepEqual(exported, defaultOptions.texts);
   });
 });

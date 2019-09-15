@@ -22,3 +22,8 @@ export function getFirst(word: string, isText = false) {
   }
   return word[0].toLowerCase();
 }
+
+export const arrayToObject = <T extends object>(obj: T, item: T) => ({
+  ...obj,
+  ...item
+});
