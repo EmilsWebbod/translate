@@ -4,7 +4,7 @@ import Branch, { Translations, BranchObject } from './Branch';
 
 type NoMatchFn = (translate: Translate, empty: Empty) => void;
 type NoTranslationFn = (translate: Translate, empty: Branch) => void;
-export interface TranslateOptions {
+interface TranslateOptions {
   defaultLocale: string;
   locale: string;
   words: WordTranslations;
@@ -41,6 +41,9 @@ export default class Translate {
     });
   }
 
+  public w(word: string, locale?: string) {
+    return this.word(word, locale);
+  }
   public word(word: string, locale = this.locale) {
     if (this.defaultLocale === locale) {
       return word;
@@ -51,6 +54,9 @@ export default class Translate {
     return this.translateAndRunNoMatch(foundWord, locale);
   }
 
+  public t(text: string, locale?: string) {
+    return this.text(text, locale);
+  }
   public text(text: string, locale = this.locale) {
     if (this.defaultLocale === locale) {
       return text;
@@ -106,6 +112,7 @@ export {
   Empty,
   Branch,
   Translate,
+  TranslateOptions,
   WordTranslations,
   TreeOptions,
   Translations,

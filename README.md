@@ -9,8 +9,8 @@ If the `locale` is set to the same as default it will print the same text as the
 ## Helping libraries
 
 **NodeJS**: In the works (Much work with how to update live)  
-**React**: [@ewb/react](https://github.com/EmilsWebbod/react-translate)  
-**Minfy Version**: Smaller version that takes the export object with only find functions (Will maybe create it. If anyone asks)
+**React**: [@ewb/react-translate](https://github.com/EmilsWebbod/react-translate)  
+**Minify Version**: [@ewb/translate-minify](https://github.com/EmilsWebbod/translate-minify)
 
 ## Setup
 
@@ -153,9 +153,14 @@ export interface TreeOptions {
 
 ```
 class Translate {
+    w(word: string, locale?: string): string;
     word(word: string, locale?: string): string;
+
+    t(text: string, locale?: string): string;
     text(text: string, locale?: string): string;
+
     changeLocale(locale: string): void;
+
     export(): ExportData;
     exportWords(): WordTranslation[];
     exportTexts(): WordTranslation[];
