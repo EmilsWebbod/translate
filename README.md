@@ -15,7 +15,14 @@ If the `locale` is set to the same as default it will print the same text as the
 ## Setup
 
 ```
-const translation = new Translation({
+npm install @ewb/translate
+
+yarn add @ewb/translate
+```
+
+```
+const Translate from '@ewb/translate';
+const translate = new Translate({
     defaultLocale: 'en',
     locale: 'no-nb',
     words: {
@@ -70,15 +77,15 @@ Text
 If Locale is the same as `defaultLocale` it will return the same text as input.
 
 ```
-translation.word('Word'); // Ord
-translation.text('This is a sentence'); // Dette er en setning
+translate.word('Word'); // Ord
+translate.text('This is a sentence'); // Dette er en setning
 
-translation.word('Word', 'en'); // Word
-translation.text('This is a sentence', 'en'); // Dette er en setning
+translate.word('Word', 'en'); // Word
+translate.text('This is a sentence', 'en'); // Dette er en setning
 
-translation.setLocale('en');
-translation.word('Worry') // Worry
-translation.text('This is not a sentence') // This is not a sentence
+translate.setLocale('en');
+translate.word('Worry') // Worry
+translate.text('This is not a sentence') // This is not a sentence
 ```
 
 ## Match
@@ -93,12 +100,12 @@ Translations will only give valid match if branch is marked as isWord.
 All other mismatches will return Empty object or Branch object in option functions
 
 ```
-new Translate({
+const translate = new Translate({
     ....,
     noWord: (translate: Translate, empty: Empty) => { ... Handle 'N/W' },
     noTranslation: (translate: Translate, branch: Branch) => { ... Handle 'N/T' }
 })
-tranlsate('No match')
+translate('No match')
 ```
 
 ### noWord: Empty
