@@ -21,7 +21,8 @@ yarn add @ewb/translate
 ```
 
 ```
-const Translate from '@ewb/translate';
+import Translate from '@ewb/translate';
+
 const translate = new Translate({
     defaultLocale: 'en',
     locale: 'no-nb',
