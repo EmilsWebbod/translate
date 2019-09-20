@@ -1,5 +1,7 @@
 import Branch from '../Branch';
 
+export const VARIABLE_REGEXP = /{{(.*?)}}/g;
+
 export function getWord(level: number, word: string, sentence = false) {
   if (sentence) {
     return word

@@ -40,6 +40,10 @@ const translate = new Translate({
         },
         'This is not a sentence': {
             'no-nb': 'Dette er ikke en setning'
+        },
+        // Variables use
+        'Are you {{age}} years old?': {
+            'no-nb': 'Er du {{age}} år gammel?'
         }
     }
 })
@@ -82,11 +86,23 @@ translate.word('Word'); // Ord
 translate.text('This is a sentence'); // Dette er en setning
 
 translate.word('Word', 'en'); // Word
-translate.text('This is a sentence', 'en'); // Dette er en setning
+translate.text('This is a sentence', { locale: 'en' }); // Dette er en setning
 
 translate.setLocale('en');
 translate.word('Worry') // Worry
 translate.text('This is not a sentence') // This is not a sentence
+```
+
+## Variables
+
+Text function supports variables with parallel to the locale object. `locale` is a reserved key in TextOptions and will not be translated.
+
+Translation is targeted with `{{variable}}`
+
+```
+translate.text('Are you {{age}} years old?', { age: 18 })
+// no-nb: Er du 18 år gammel?
+// en: Are you 18 years old?
 ```
 
 ## Match
@@ -126,13 +142,21 @@ So running `empty.add()` or `branch.addTranlsation()` will not save value persis
 
 ```
 interface WordTranslations {
-  [key: string]: {
-    [key: string]: string;
+  [translation: string]: {
+    [locale: string]: string;
   };
 }
 
 interface Translations {
   [key: string]: string;
+}
+
+interface Variables {
+  [variable: string]: string | number | undefined;
+}
+
+interface TextOptions extends Variables {
+  locale?: string;
 }
 
 interface TranslateOptions {
@@ -164,8 +188,8 @@ class Translate {
     w(word: string, locale?: string): string;
     word(word: string, locale?: string): string;
 
-    t(text: string, locale?: string): string;
-    text(text: string, locale?: string): string;
+    t(text: string, opts?: TextOptions): string;
+    text(text: string, opts?: TextOptions): string;
 
     changeLocale(locale: string): void;
 
@@ -206,8 +230,8 @@ class Branch {
 }
 
 class Empty {
-    // Will always return N/T
-    translate(locale: string): 'N/T';
+    // Will always return N/T (%word%)
+    translate(locale: string): 'N/T (%word%)';
 
     // Add word to the tree with translations if wanted
     add(translations?: { [key: string]: string });

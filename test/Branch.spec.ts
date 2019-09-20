@@ -143,4 +143,13 @@ describe('Branch sentence', () => {
       assert.equal(suggestions, 'Hei dette ble feil');
     }
   });
+
+  it('should add text with variable', () => {
+    const text = 'Hei Sentence with {{length}} words';
+    branch.add(text, {
+      'no-nb': 'Hei en setning med {{length}} words'
+    });
+    const found = branch.find(text);
+    assert.isTrue(found instanceof Branch);
+  });
 });

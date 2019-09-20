@@ -27,7 +27,7 @@ describe('Tree', () => {
 
   it('should add text to list and split up with words', () => {
     assert.isObject(tree.texts);
-    assert.lengthOf(Object.keys(tree.texts), 2);
+    assert.lengthOf(Object.keys(tree.texts), 3);
   });
 
   it('should add sentence to object', () => {

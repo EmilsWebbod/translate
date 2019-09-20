@@ -82,7 +82,12 @@ describe('Translation object', () => {
 
   it('should return text translation on changed option locale', () => {
     const text = defaultOptions.texts[textKey];
-    assert.equal(translate.text(textKey, 'se'), text['se']);
+    assert.equal(
+      translate.text(textKey, {
+        locale: 'se'
+      }),
+      text['se']
+    );
   });
 
   it('should run noMatch function if word not found', () => {
@@ -96,7 +101,7 @@ describe('Translation object', () => {
     const NW = _translate.word('No');
 
     assert.isTrue(empty && empty instanceof Empty);
-    assert.equal(NW, 'N/W');
+    assert.equal(NW, 'N/W (No)');
   });
 
   it('should run noMatch function if text not found', () => {
@@ -110,7 +115,7 @@ describe('Translation object', () => {
     const NW = _translate.text('No translations');
 
     assert.isTrue(empty && empty instanceof Empty);
-    assert.equal(NW, 'N/W');
+    assert.equal(NW, 'N/W (No translations)');
   });
 
   it('should run NoTranslation function if translation not found', () => {
@@ -124,7 +129,7 @@ describe('Translation object', () => {
     const NT = _translate.word('Test', 'us');
 
     assert.isTrue(branch && branch instanceof Branch);
-    assert.equal(NT, 'N/T');
+    assert.equal(NT, 'N/T (Test)');
   });
 
   it('should run noMatch function if text not found', () => {
@@ -135,10 +140,40 @@ describe('Translation object', () => {
         branch = branch1;
       }
     });
-    const NT = _translate.text('This is a test', 'us');
+    const NT = _translate.text('This is a test', {
+      locale: 'us'
+    });
 
     assert.isTrue(branch && branch instanceof Branch);
-    assert.equal(NT, 'N/T');
+    assert.equal(NT, 'N/T (This is a test)');
+  });
+
+  it('should replace {{variable}} from object in second parameter', () => {
+    const text = 'My name is {{name}}';
+    const translated = 'Mitt navn er Emil';
+    const variable = {
+      name: 'Emil'
+    };
+
+    const translation = translate.text(text, variable);
+    assert.equal(translation, translated);
+  });
+
+  it('should not replace {{variable}} in no object is given', () => {
+    const text = 'My name is {{name}}';
+    const translated = 'Mitt navn er {{name}}';
+    const translation = translate.text(text);
+    assert.equal(translation, translated);
+  });
+
+  it('should replace multiple {{variable}}', () => {
+    const text = "My name is {{name}}. I'm {{age}} years old";
+    const translated = 'Mitt navn er Emil. Jeg er 30 år gammel.';
+    const translation = translate.text(text, {
+      name: 'Emil',
+      age: 30
+    });
+    assert.equal(translation, translated);
   });
 
   describe('Export', () => {

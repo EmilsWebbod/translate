@@ -1,6 +1,7 @@
 import Tree, { WordTranslations, TreeOptions } from './Tree';
 import Empty from './Empty';
 import Branch, { Translations, BranchObject } from './Branch';
+import { VARIABLE_REGEXP } from './utils/helpers';
 
 type NoMatchFn = (translate: Translate, empty: Empty) => void;
 type NoTranslationFn = (translate: Translate, empty: Branch) => void;
@@ -12,6 +13,14 @@ interface TranslateOptions {
 
   noMatch?: NoMatchFn;
   noTranslation?: NoTranslationFn;
+}
+
+interface Variables {
+  [variable: string]: string | number | undefined;
+}
+
+interface TextOptions extends Variables {
+  locale?: string;
 }
 
 export default class Translate {
@@ -54,17 +63,20 @@ export default class Translate {
     return this.translateAndRunNoMatch(foundWord, locale);
   }
 
-  public t(text: string, locale?: string) {
-    return this.text(text, locale);
+  public t(text: string, opts?: TextOptions) {
+    return this.text(text, opts);
   }
-  public text(text: string, locale = this.locale) {
+  public text(
+    text: string,
+    { locale = this.locale, ...variables }: TextOptions = {}
+  ) {
     if (this.defaultLocale === locale) {
-      return text;
+      return this.replaceVariables(text, variables);
     }
 
     const foundText = this.tree.text(text);
-
-    return this.translateAndRunNoMatch(foundText, locale);
+    const translated = this.translateAndRunNoMatch(foundText, locale);
+    return this.replaceVariables(translated, variables);
   }
 
   public changeLocale(locale: string) {
@@ -86,6 +98,15 @@ export default class Translate {
     return this.tree.exportTexts();
   }
 
+  private replaceVariables(text: string, variables: Variables) {
+    if (Object.keys(variables).length === 0) {
+      return text;
+    }
+    return text.replace(VARIABLE_REGEXP, (word, group) => {
+      return String(variables[group] || word);
+    });
+  }
+
   private translateAndRunNoMatch(foundText: Branch | Empty, locale: string) {
     if (foundText instanceof Empty) {
       if (typeof this.noMatch === 'function') {
@@ -100,7 +121,7 @@ export default class Translate {
         this.noTranslation(this, translated);
       }
 
-      return 'N/T';
+      return `N/T (${foundText.word})`;
     }
 
     return translated;
@@ -116,5 +137,7 @@ export {
   WordTranslations,
   TreeOptions,
   Translations,
-  BranchObject
+  BranchObject,
+  Variables,
+  TextOptions
 };

@@ -35,5 +35,13 @@ export const texts: WordTranslations = {
   'Yes this is good': {
     'no-nb': 'Ja det er bra',
     se: 'Ja det er bra se'
+  },
+  'My name is {{name}}': {
+    'no-nb': 'Mitt navn er {{name}}',
+    se: 'Jag heter {{name}}'
+  },
+  "My name is {{name}}. I'm {{age}} years old": {
+    'no-nb': 'Mitt navn er {{name}}. Jeg er {{age}} år gammel.',
+    se: 'Jag heter {{name}}. {{age}}'
   }
 };

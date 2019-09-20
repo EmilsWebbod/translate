@@ -3,8 +3,8 @@ import Empty from './Empty';
 import { arrayToObject, getFirst } from './utils/helpers';
 
 export interface WordTranslations {
-  [key: string]: {
-    [key: string]: string;
+  [translate: string]: {
+    [locale: string]: string;
   };
 }
 

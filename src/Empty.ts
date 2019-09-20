@@ -11,7 +11,7 @@ export default class Empty {
   ) {}
 
   public translate(_: string) {
-    return 'N/W';
+    return `N/W (${this.addWord})`;
   }
 
   public add(translations?: Translations) {
