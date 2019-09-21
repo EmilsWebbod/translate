@@ -9,6 +9,7 @@
     "**/*.ts"
   ],
   "exclude": [
+    "test/**",
     "coverage/**",
     "node_modules/**",
     "**/*.d.ts",
@@ -16,7 +17,9 @@
   ],
   "sourceMap": true,
   "reporter": [
-    "text-lcov"
+    "text-lcov",
+    "text",
+    "text-summary"
   ],
   "all": true,
   "instrument": true

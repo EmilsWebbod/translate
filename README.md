@@ -1,7 +1,9 @@
 # Translate library
 
+[![npm version](https://badge.fury.io/js/%40ewb%2Ftranslate.svg)](https://badge.fury.io/js/%40ewb%2Ftranslate)
 [![CircleCI](https://circleci.com/gh/EmilsWebbod/translate/tree/master.svg?style=svg)](https://circleci.com/gh/EmilsWebbod/translate/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/EmilsWebbod/translate/badge.svg?branch=master)](https://coveralls.io/github/EmilsWebbod/translate?branch=master)
+[![GZIP](https://badgen.net/badge/gzip/1.7kB/green)]()
 
 This library was created to help you translate your application on the go.
 
