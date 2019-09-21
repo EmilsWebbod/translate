@@ -1,6 +1,7 @@
 # Translate library
 
 [![CircleCI](https://circleci.com/gh/EmilsWebbod/translate/tree/master.svg?style=svg)](https://circleci.com/gh/EmilsWebbod/translate/tree/master)
+[![Coverage Status](https://coveralls.io/repos/github/EmilsWebbod/translate/badge.svg?branch=master)](https://coveralls.io/github/EmilsWebbod/translate?branch=master)
 
 This library was created to help you translate your application on the go.
 
