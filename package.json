@@ -11,8 +11,7 @@
     "lint": "tslint --project \"./tsconfig.json\"",
     "test:watch": "mocha --watch --watch-extensions ts -r ts-node/register test/**/*.spec.ts",
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
-    "coverage": "nyc mocha -r ts-node/register test/**/*.spec.ts",
-    "coveralls": "coveralls",
+    "coverage": "nyc mocha -r ts-node/register test/**/*.spec.ts | coveralls",
     "postversion": "git push && git push --tags",
     "prepublish": "npm run build",
     "preversion": "npm run build"
