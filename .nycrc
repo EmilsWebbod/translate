@@ -16,9 +16,7 @@
   ],
   "sourceMap": true,
   "reporter": [
-    "html",
-    "text",
-    "text-summary"
+    "text-lcov"
   ],
   "all": true,
   "instrument": true
