@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import Branch from '../src/Branch';
-import { WordTranslations } from '../src';
+import { Empty, WordTranslations } from '../src';
 
 const words: WordTranslations = {
   Abc: {},
@@ -65,6 +65,29 @@ describe('Branch word', () => {
     } else {
       assert.fail();
     }
+  });
+
+  it('should add translation when lesser is already part of word', () => {
+    const added = branch.add('ab');
+    assert.isTrue(added);
+    const found = branch.find('ab') as Branch;
+    assert.isTrue(found instanceof Branch);
+    assert.isTrue(found.isWord);
+  });
+
+  it('should return Empty if invalid find value', () => {
+    const found = branch.find(undefined as any);
+    assert.isTrue(found instanceof Empty);
+  });
+
+  it('should return Empty if invalid match', () => {
+    const found = branch.find('');
+    assert.isTrue(found instanceof Empty);
+  });
+
+  it('should return Empty if partial match', () => {
+    const found = branch.find('a');
+    assert.isTrue(found instanceof Empty);
   });
 
   it('should get tranlsation', () => {

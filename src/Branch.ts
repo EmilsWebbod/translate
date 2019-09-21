@@ -134,6 +134,10 @@ export default class Branch {
     let w;
     let nw;
 
+    if (!newWord) {
+      return true;
+    }
+
     if (this.sentence) {
       w = this.word.split(' ')[this.level];
       nw = newWord.split(' ')[this.level];

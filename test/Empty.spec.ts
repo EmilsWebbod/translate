@@ -1,6 +1,8 @@
 import { assert } from 'chai';
 import Empty from '../src/Empty';
 import Branch from '../src/Branch';
+import { Tree } from '../src';
+import { texts, words } from './mocks';
 
 describe('Empty', () => {
   let branch: Branch;
@@ -45,6 +47,30 @@ describe('Empty', () => {
     if (!found.word) {
       const suggestions = found.suggestions();
       assert.equal(suggestions, 'abc, abd, abe, abf');
+    }
+  });
+});
+
+describe('Empty tree', () => {
+  let tree: Tree;
+  let empty: Empty;
+
+  beforeEach(() => {
+    tree = new Tree({ words, texts });
+    empty = tree.word('abcd') as Empty;
+  });
+
+  it('should return empty as instanceof Empty', () => {
+    assert.isTrue(empty instanceof Empty);
+  });
+
+  it('should return text suggestions', () => {
+    const found = tree.word('wasd');
+    if (!found.word) {
+      const suggestions = found.suggestions();
+      assert.equal(suggestions, 'Test, Tent, Awesome, Awkward, Cool');
+    } else {
+      assert.fail();
     }
   });
 });

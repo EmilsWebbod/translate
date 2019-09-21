@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import Tree from '../src/Tree';
 import { texts, words } from './mocks';
 import Empty from '../src/Empty';
+import { Branch } from '../src';
 
 const defaultOptions = {
   words,
@@ -87,5 +88,17 @@ describe('Tree', () => {
     const exported = tree.exportTexts();
     assert.isObject(exported);
     assert.deepEqual(exported, defaultOptions.texts);
+  });
+
+  it('should return word suggestions', () => {
+    const suggestions = tree.suggestions(false);
+    assert.lengthOf(suggestions, 5);
+    assert.isTrue(suggestions[0] instanceof Branch);
+  });
+
+  it('should return text suggestions', () => {
+    const suggestions = tree.suggestions(true);
+    assert.lengthOf(suggestions, 5);
+    assert.isTrue(suggestions[0] instanceof Branch);
   });
 });

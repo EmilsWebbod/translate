@@ -1,5 +1,7 @@
 # Translate library
 
+[![CircleCI](https://circleci.com/gh/EmilsWebbod/translate/tree/master.svg?style=svg)](https://circleci.com/gh/EmilsWebbod/translate/tree/master)
+
 This library was created to help you translate your application on the go.
 
 You can select the language you want to write in for the input. And there is no need to think about how to setup the structure for translations. Your code will have easily readable code for translation `translate.word('Yes')` or `translate.text('Wrong username')`

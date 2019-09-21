@@ -12,6 +12,8 @@ const defaultOptions: TranslateOptions = {
 
 describe('Default translation', () => {
   let translate: Translate;
+  const wordKey = 'Test';
+  const textKey = 'This is a test';
 
   beforeEach(() => {
     translate = new Translate({
@@ -20,9 +22,14 @@ describe('Default translation', () => {
     });
   });
 
-  it('should return default translation', () => {
-    const translated = translate.word('Test');
-    assert.equal(translated, 'Test');
+  it('should return default word translation', () => {
+    const translated = translate.word(wordKey);
+    assert.equal(translated, wordKey);
+  });
+
+  it('should return default text translation', () => {
+    const translated = translate.text(textKey);
+    assert.equal(translated, textKey);
   });
 });
 
@@ -54,13 +61,17 @@ describe('Translation object', () => {
   it('should find word and translations', () => {
     const checkWord = defaultOptions.words[wordKey];
     const word = translate.word(wordKey);
+    const w = translate.w(wordKey);
     assert.equal(word, checkWord['no-nb']);
+    assert.equal(w, checkWord['no-nb']);
   });
 
   it('should find text and translations', () => {
     const checkText = defaultOptions.texts[textKey];
     const text = translate.text(textKey);
+    const t = translate.t(textKey);
     assert.equal(text, checkText['no-nb']);
+    assert.equal(t, checkText['no-nb']);
   });
 
   it('should be able to change language', () => {
