@@ -1,6 +1,6 @@
 {
   "name": "@ewb/translate",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Translate as you create your app. Saves the words and text in a tree structure for fast and easy lookup.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -43,18 +43,18 @@
     }
   },
   "devDependencies": {
-    "@types/chai": "^4.2.0",
+    "@types/chai": "^4.2.7",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
-    "coveralls": "^3.0.6",
-    "husky": "^3.0.5",
-    "mocha": "^6.2.0",
-    "nyc": "^14.1.1",
-    "prettier": "^1.18.2",
-    "pretty-quick": "^1.11.1",
-    "ts-node": "^8.3.0",
-    "tslint": "^5.19.0",
-    "typescript": "^3.6.2"
+    "coveralls": "^3.0.9",
+    "husky": "^4.0.10",
+    "mocha": "^7.0.0",
+    "nyc": "^15.0.0",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1",
+    "ts-node": "^8.6.2",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.5"
   },
   "peerDependencies": {},
   "dependencies": {},
