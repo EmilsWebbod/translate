@@ -22,23 +22,23 @@ export default class Tree {
     Object.keys(texts).map(k => this.addText(k, texts[k]));
   }
 
-  public addWord(word: string, translations?: Translations) {
+  public addWord(word: string, translations?: Translations, apiID?: string) {
     const char = getFirst(word);
 
     if (this.words[char]) {
-      this.words[char].add(word, translations);
+      this.words[char].add(word, translations, apiID);
     } else {
-      this.words[char] = new Branch(0, word, false, translations);
+      this.words[char] = new Branch(0, word, false, translations, apiID);
     }
   }
 
-  public addText(text: string, translations?: Translations) {
+  public addText(text: string, translations?: Translations, apiID?: string) {
     const word = getFirst(text, true);
 
     if (this.texts[word]) {
-      this.texts[word].add(text, translations);
+      this.texts[word].add(text, translations, apiID);
     } else {
-      this.texts[word] = new Branch(0, text, true, translations);
+      this.texts[word] = new Branch(0, text, true, translations, apiID);
     }
   }
 

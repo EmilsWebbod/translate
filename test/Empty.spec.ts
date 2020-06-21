@@ -1,8 +1,12 @@
 import { assert } from 'chai';
+import * as fetchMock from 'fetch-mock';
+
 import Empty from '../src/Empty';
 import Branch from '../src/Branch';
 import { Tree } from '../src';
 import { texts, words } from './mocks';
+import { ISO_639_1, TranslationApi } from '../src/TranslationApi';
+import { mockApiUrl, mockTranslationAllo } from './mocks/apiTranslations';
 
 describe('Empty', () => {
   let branch: Branch;
@@ -17,13 +21,11 @@ describe('Empty', () => {
     empty = branch.find('abcd') as Empty;
   });
 
+  afterEach(() => fetchMock.restore());
+
   it('should be class and created with branch', () => {
     assert.isTrue(Empty instanceof Object);
     assert.isObject(empty.branch);
-  });
-
-  it('should have word always as null', () => {
-    assert.isNull(empty.word);
   });
 
   it('should have function translate but should return no word', () => {
@@ -33,21 +35,36 @@ describe('Empty', () => {
   });
 
   it('should have word saved if user want to add', () => {
-    assert.equal(empty.addWord, 'abcd');
+    assert.equal(empty.word, 'abcd');
   });
 
   it('should add word if add function is run', () => {
     empty.add();
     const found = branch.find('abcd');
-    assert.isNotNull(found.word);
+    assert.isNotEmpty(found.word);
   });
 
   it('should return words that close matches', () => {
     const found = branch.find('abg');
-    if (!found.word) {
+    if (found instanceof Empty) {
       const suggestions = found.suggestions();
       assert.equal(suggestions, 'abc, abd, abe, abf');
     }
+  });
+
+  it('active: should add word from api', async () => {
+    fetchMock.get(mockApiUrl('allo', 'en', 'en,nb'), mockTranslationAllo);
+    const languages: ISO_639_1[] = ['en', 'nb'];
+    const foundEmpty = branch.find('allo');
+    if (foundEmpty instanceof Empty) {
+      const res = await foundEmpty.fromApi('en', languages);
+      const translations = TranslationApi.parseTranslations(res, languages);
+      foundEmpty.add(translations);
+    }
+    const found = branch.find('allo') as Branch;
+    assert.isTrue(found instanceof Branch);
+    // @ts-ignore
+    assert.equal(found.translate('nb'), mockTranslationAllo.nb[0].value);
   });
 });
 
@@ -66,7 +83,7 @@ describe('Empty tree', () => {
 
   it('should return text suggestions', () => {
     const found = tree.word('wasd');
-    if (!found.word) {
+    if (found instanceof Empty) {
       const suggestions = found.suggestions();
       assert.equal(suggestions, 'Test, Tent, Awesome, Awkward, Cool');
     } else {

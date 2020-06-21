@@ -1,27 +1,30 @@
 import Branch, { Translations } from './Branch';
 import Tree from './Tree';
+import ApiBranch from './ApiBranch';
 
-export default class Empty {
-  public word: null = null;
+export default class Empty extends ApiBranch {
+  public apiID = '';
 
   constructor(
     public branch: Branch | Tree,
-    public addWord: string,
+    word: string,
     public isTreeText = false
-  ) {}
+  ) {
+    super(word);
+  }
 
   public translate(_: string) {
-    return `N/W (${this.addWord})`;
+    return `N/W (${this.word})`;
   }
 
   public add(translations?: Translations) {
-    if ('isWord' in this.branch) {
-      this.branch.add(this.addWord, translations);
+    if (this.branch instanceof Branch) {
+      this.branch.add(this.word, translations, this.apiID);
     } else {
       if (this.isTreeText) {
-        this.branch.addText(this.addWord, translations);
+        this.branch.addText(this.word, translations, this.apiID);
       } else {
-        this.branch.addWord(this.addWord, translations);
+        this.branch.addWord(this.word, translations, this.apiID);
       }
     }
   }

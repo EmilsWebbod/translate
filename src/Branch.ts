@@ -2,6 +2,7 @@ import Empty from './Empty';
 import { add } from './utils/math';
 import { arrayToObject, getWord, suggestions } from './utils/helpers';
 import { WordTranslations } from './Tree';
+import ApiBranch from './ApiBranch';
 
 export interface BranchObject {
   [key: string]: Branch;
@@ -11,19 +12,18 @@ export interface Translations {
   [key: string]: string;
 }
 
-export default class Branch {
+export default class Branch extends ApiBranch {
   public words: BranchObject = {};
   public isWord: boolean = false;
-  public word: string;
-  public translations: Translations = {};
 
   constructor(
     public level: number,
     word: string,
     public sentence: boolean = false,
-    translations: Translations = {}
+    translations: Translations = {},
+    apiID = ''
   ) {
-    this.word = getWord(level, word, sentence);
+    super(getWord(level, word, sentence));
     const char = this.getNextCharacter(word);
 
     if (char) {
@@ -31,15 +31,17 @@ export default class Branch {
         this.level + 1,
         word,
         sentence,
-        translations
+        translations,
+        apiID
       );
     } else {
       this.translations = translations;
       this.isWord = true;
+      this.apiID = apiID;
     }
   }
 
-  public add(newWord: string, translations?: Translations) {
+  public add(newWord: string, translations?: Translations, apiID?: string) {
     if (this.match(newWord)) {
       if (!this.isWord) {
         this.isWord = true;
@@ -52,13 +54,14 @@ export default class Branch {
     const char = this.getNextCharacter(newWord);
 
     if (this.words[char]) {
-      this.words[char].add(newWord, translations);
+      this.words[char].add(newWord, translations, apiID);
     } else {
       this.words[char] = new Branch(
         this.level + 1,
         newWord,
         this.sentence,
-        translations
+        translations,
+        apiID
       );
     }
 
@@ -81,6 +84,14 @@ export default class Branch {
     }
 
     return new Empty(this, word, this.sentence);
+  }
+
+  public addTranslations(translations: Translations) {
+    for (const lang in translations) {
+      if (translations.hasOwnProperty(lang)) {
+        this.addTranslation(lang, translations[lang]);
+      }
+    }
   }
 
   public addTranslation(locale: string, translation: string) {

@@ -1,6 +1,10 @@
 import { assert } from 'chai';
+import * as fetchMock from 'fetch-mock';
+
 import Branch from '../src/Branch';
 import { Empty, WordTranslations } from '../src';
+import { ISO_639_1, TranslationApi } from '../src/TranslationApi';
+import { mockApiUrl, mockTranslationAbc } from './mocks/apiTranslations';
 
 const words: WordTranslations = {
   Abc: {},
@@ -17,6 +21,8 @@ describe('Branch word', () => {
     branch = new Branch(0, 'Abc');
     Object.keys(words).map(k => branch.add(k));
   });
+
+  afterEach(() => fetchMock.restore());
 
   it('should be a class', () => {
     assert.isTrue(Branch instanceof Object);
@@ -57,7 +63,7 @@ describe('Branch word', () => {
   it('should add translation', () => {
     const found = branch.find('abc');
 
-    if (found.word) {
+    if (found instanceof Branch) {
       found.addTranslation('en', 'aaa');
       found.addTranslation('se', 'bbb');
       found.addTranslation('no-nb', 'ccc');
@@ -92,7 +98,7 @@ describe('Branch word', () => {
 
   it('should get tranlsation', () => {
     const found = branch.find('abc');
-    if (found.word) {
+    if (found instanceof Branch) {
       found.addTranslation('en', 'aaa');
       assert.equal(found.translate('en'), 'aaa');
     } else {
@@ -128,6 +134,24 @@ describe('Branch word', () => {
         translation.addTranslation('en', 'aaa');
         assert.equal(word.translate('en'), 'aaa');
       }
+    });
+
+    it('active: should add translations from API', async () => {
+      const languages: ISO_639_1[] = ['en'];
+      const key = 'Abc';
+      fetchMock.get(mockApiUrl(key, 'nb', 'en'), mockTranslationAbc);
+
+      const word = branch.find(key);
+      const translations = await word.fromApi('nb', languages);
+      if (word instanceof Branch) {
+        word.addTranslations(
+          TranslationApi.parseTranslations(translations, languages)
+        );
+      }
+
+      const translation = word.translate('en');
+      // @ts-ignore
+      assert.equal(translation, mockTranslationAbc.en[0].value);
     });
   });
 });
