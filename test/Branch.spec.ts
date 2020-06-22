@@ -136,7 +136,7 @@ describe('Branch word', () => {
       }
     });
 
-    it('active: should add translations from API', async () => {
+    it('should add translations from API', async () => {
       const languages: ISO_639_1[] = ['en'];
       const key = 'Abc';
       fetchMock.get(mockApiUrl(key, 'nb', 'en'), mockTranslationAbc);

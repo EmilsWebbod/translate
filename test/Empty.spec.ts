@@ -52,7 +52,7 @@ describe('Empty', () => {
     }
   });
 
-  it('active: should add word from api', async () => {
+  it('should add word from api', async () => {
     fetchMock.get(mockApiUrl('allo', 'en', 'en,nb'), mockTranslationAllo);
     const languages: ISO_639_1[] = ['en', 'nb'];
     const foundEmpty = branch.find('allo');

@@ -8,8 +8,10 @@ import {
   mockTranslations
 } from './mocks/apiTranslations';
 import { API_URL } from './mocks/utils';
+import { Tree } from '../src';
+import { texts, words } from './mocks';
 
-describe('active: TranslationAPI', () => {
+describe('TranslationAPI', () => {
   const translation = new TranslationApi(API_URL);
   const postData = {
     value: mockTranslation.value,
@@ -87,6 +89,23 @@ describe('active: TranslationAPI', () => {
     }
   });
 
+  it('active: should create app with help of words and text', async () => {
+    try {
+      fetchMock.post(`${API_URL}/apps/test`, {});
+      const tree = new Tree({ words, texts });
+      const treeWords = tree.exportWords();
+      const treeTexts = tree.exportTexts();
+      const res = await translation.createOrUpdate(
+        'test',
+        treeWords,
+        treeTexts
+      );
+      assert.isObject(res);
+    } catch (e) {
+      assert.fail(e.message);
+    }
+  });
+
   describe('statics', () => {
     it('should return singleton on .of', () => {
       const item = TranslationApi.of();
@@ -105,7 +124,7 @@ describe('active: TranslationAPI', () => {
     });
   });
 
-  xdescribe('active: Real API', () => {
+  xdescribe('Real API', () => {
     beforeEach(() => {
       fetchMock.config.fallbackToNetwork = 'always';
     });
@@ -139,7 +158,7 @@ describe('active: TranslationAPI', () => {
           nb: ['hei', 'halla']
         });
         assert.equal(res.value, 'hello');
-        //@ts-ignore
+        // @ts-ignore
         assert.isAtLeast(res.nb.length, 2);
       } catch (e) {
         console.error(e);

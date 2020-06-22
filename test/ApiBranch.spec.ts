@@ -8,7 +8,7 @@ import {
 import { Branch, Empty } from '../src';
 import { API_URL } from './mocks/utils';
 
-describe('active: ApiBranch', () => {
+describe('ApiBranch', () => {
   const branch = new Branch(0, mockTranslations[1].value);
 
   afterEach(() => fetchMock.restore());

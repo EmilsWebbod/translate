@@ -1,194 +1,8 @@
 import { Translations } from './Branch';
+import { ISO_639_1 } from './utils/iso_639_1';
+import { WordTranslations } from './Tree';
 
-export type ISO_639_1 =
-  | 'aa'
-  | 'ab'
-  | 'ae'
-  | 'af'
-  | 'ak'
-  | 'am'
-  | 'an'
-  | 'ar'
-  | 'as'
-  | 'av'
-  | 'ay'
-  | 'az'
-  | 'ba'
-  | 'be'
-  | 'bg'
-  | 'bh'
-  | 'bi'
-  | 'bm'
-  | 'bn'
-  | 'bo'
-  | 'br'
-  | 'bs'
-  | 'ca'
-  | 'cd'
-  | 'ce'
-  | 'ch'
-  | 'co'
-  | 'cr'
-  | 'cs'
-  | 'cu'
-  | 'cv'
-  | 'cy'
-  | 'da'
-  | 'de'
-  | 'dv'
-  | 'dz'
-  | 'ee'
-  | 'el'
-  | 'en'
-  | 'eo'
-  | 'es'
-  | 'et'
-  | 'eu'
-  | 'fa'
-  | 'ff'
-  | 'fi'
-  | 'fj'
-  | 'fo'
-  | 'fr'
-  | 'fy'
-  | 'ga'
-  | 'gd'
-  | 'gl'
-  | 'gn'
-  | 'gu'
-  | 'gv'
-  | 'ha'
-  | 'he'
-  | 'hi'
-  | 'ho'
-  | 'hr'
-  | 'ht'
-  | 'hu'
-  | 'hy'
-  | 'hz'
-  | 'ia'
-  | 'id'
-  | 'ie'
-  | 'ig'
-  | 'ii'
-  | 'ik'
-  | 'io'
-  | 'is'
-  | 'it'
-  | 'iu'
-  | 'ja'
-  | 'jv'
-  | 'ka'
-  | 'kg'
-  | 'ki'
-  | 'kj'
-  | 'kk'
-  | 'kl'
-  | 'km'
-  | 'kn'
-  | 'ko'
-  | 'kr'
-  | 'ks'
-  | 'ku'
-  | 'kv'
-  | 'kw'
-  | 'ky'
-  | 'la'
-  | 'lb'
-  | 'lg'
-  | 'li'
-  | 'ln'
-  | 'lo'
-  | 'lt'
-  | 'lu'
-  | 'lv'
-  | 'mg'
-  | 'mh'
-  | 'mi'
-  | 'mk'
-  | 'ml'
-  | 'mn'
-  | 'mo'
-  | 'mr'
-  | 'ms'
-  | 'mt'
-  | 'my'
-  | 'na'
-  | 'nb'
-  | 'nd'
-  | 'ne'
-  | 'ng'
-  | 'nl'
-  | 'nn'
-  | 'no'
-  | 'nr'
-  | 'nv'
-  | 'ny'
-  | 'oc'
-  | 'oj'
-  | 'om'
-  | 'or'
-  | 'os'
-  | 'pa'
-  | 'pi'
-  | 'pl'
-  | 'ps'
-  | 'pt'
-  | 'qu'
-  | 'rm'
-  | 'rn'
-  | 'ro'
-  | 'ru'
-  | 'rw'
-  | 'sa'
-  | 'sc'
-  | 'sd'
-  | 'se'
-  | 'sg'
-  | 'sh'
-  | 'si'
-  | 'sk'
-  | 'sl'
-  | 'sm'
-  | 'sn'
-  | 'so'
-  | 'sq'
-  | 'sr'
-  | 'ss'
-  | 'st'
-  | 'su'
-  | 'sv'
-  | 'sw'
-  | 'ta'
-  | 'te'
-  | 'tg'
-  | 'th'
-  | 'ti'
-  | 'tk'
-  | 'tl'
-  | 'tn'
-  | 'to'
-  | 'tr'
-  | 'ts'
-  | 'tt'
-  | 'tw'
-  | 'ty'
-  | 'ug'
-  | 'uk'
-  | 'ur'
-  | 'uz'
-  | 've'
-  | 'vi'
-  | 'vo'
-  | 'wa'
-  | 'wo'
-  | 'xh'
-  | 'yi'
-  | 'yo'
-  | 'za'
-  | 'ze'
-  | 'zh'
-  | 'zu';
+export { ISO_639_1 };
 
 export type ApiTranslationValue = {
   [key in ISO_639_1]?: TranslationPopulated[];
@@ -319,6 +133,28 @@ export class TranslationApi {
     return res.json();
   }
 
+  public async createOrUpdate(
+    app: string,
+    words: WordTranslations,
+    texts: WordTranslations
+  ) {
+    const res = await fetch(`${this.url}/apps/${app}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        words: Object.keys(words).map(value => ({ value, ...words[value] })),
+        texts: Object.keys(texts).map(value => ({ value, ...texts[value] }))
+      }),
+      ...this.apiOpts,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (res.status > 400) {
+      throw new Error(res.statusText);
+    }
+    return res.json();
+  }
+
   private dataToBody<T extends URIComponent>(data: T) {
     return (Object.keys(data) as Array<keyof T>)
       .map(key => {
@@ -333,5 +169,5 @@ export class TranslationApi {
 }
 
 interface URIComponent {
-  [key: string]: string | number | boolean | string[] | undefined;
+  [key: string]: string | number | boolean | string[] | undefined | any;
 }
