@@ -2,6 +2,7 @@ import Tree, { WordTranslations, TreeOptions } from './Tree';
 import Empty from './Empty';
 import Branch, { Translations, BranchObject } from './Branch';
 import { VARIABLE_REGEXP } from './utils/helpers';
+import { ISO_639_1 } from './utils/iso_639_1';
 
 type NoMatchFn = (translate: Translate, empty: Empty) => void;
 type NoTranslationFn = (translate: Translate, empty: Branch) => void;
@@ -139,5 +140,6 @@ export {
   Translations,
   BranchObject,
   Variables,
-  TextOptions
+  TextOptions,
+  ISO_639_1
 };
