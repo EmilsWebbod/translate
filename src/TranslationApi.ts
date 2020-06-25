@@ -46,9 +46,7 @@ export class TranslationApi {
     for (const language of languages) {
       if (language in obj && obj[language] && Array.isArray(obj[language])) {
         const translation = obj[language]!;
-        if (translation[0] && typeof translation[0] === 'object') {
-          translations[language] = translation[0].value;
-        }
+        translations[language] = translation.map(x => x.value).join(',');
       }
     }
     return translations;
@@ -87,10 +85,9 @@ export class TranslationApi {
     ]
       .filter(Boolean)
       .join('&');
-    const res = await fetch(
-      `${this.url}/translations/${wordOrId}?${queries}`,
-      this.apiOpts
-    );
+    const res = await fetch(`${this.url}/translations/${wordOrId}?${queries}`, {
+      credentials: 'omit'
+    });
     if (res.status > 400) {
       throw new Error(res.statusText);
     }

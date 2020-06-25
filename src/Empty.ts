@@ -17,7 +17,8 @@ export default class Empty extends ApiBranch {
     return `N/W (${this.word})`;
   }
 
-  public add(translations?: Translations) {
+  public add(translations: Translations = {}) {
+    this.translations = translations;
     if (this.branch instanceof Branch) {
       this.branch.add(this.word, translations, this.apiID);
     } else {
