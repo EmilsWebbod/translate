@@ -87,7 +87,10 @@ export class TranslationApi {
     ]
       .filter(Boolean)
       .join('&');
-    const res = await fetch(`${this.url}/translations/${wordOrId}?${queries}`);
+    const res = await fetch(
+      `${this.url}/translations/${wordOrId}?${queries}`,
+      this.apiOpts
+    );
     if (res.status > 400) {
       throw new Error(res.statusText);
     }
@@ -112,7 +115,7 @@ export class TranslationApi {
       ...this.apiOpts
     });
     if (res.status > 400) {
-      console.error(await res.json());
+      console.error(res);
       throw new Error(res.statusText);
     }
     return res.json();
@@ -157,13 +160,10 @@ export class TranslationApi {
 
   private dataToBody<T extends URIComponent>(data: T) {
     return (Object.keys(data) as Array<keyof T>)
-      .map(key => {
-        return (
-          encodeURIComponent(String(key)) +
-          '=' +
-          encodeURIComponent(data[key] as any)
-        );
-      })
+      .map(
+        key =>
+          `${encodeURIComponent(String(key))}=${encodeURIComponent(data[key])}`
+      )
       .join('&');
   }
 }

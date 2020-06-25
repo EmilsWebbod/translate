@@ -3,6 +3,7 @@ import Empty from './Empty';
 import Branch, { Translations, BranchObject } from './Branch';
 import { VARIABLE_REGEXP } from './utils/helpers';
 import { ISO_639_1 } from './utils/iso_639_1';
+import { TranslationApi } from './TranslationApi';
 
 type NoMatchFn = (translate: Translate, empty: Empty) => void;
 type NoTranslationFn = (translate: Translate, empty: Branch) => void;
@@ -141,5 +142,6 @@ export {
   BranchObject,
   Variables,
   TextOptions,
-  ISO_639_1
+  ISO_639_1,
+  TranslationApi
 };
