@@ -100,6 +100,32 @@ export default class Translate {
     return this.tree.exportTexts();
   }
 
+  // todo: Create test
+  public getBranch(wordOrText: string) {
+    return this._branch(wordOrText);
+  }
+
+  public delete(wordOrText: string) {
+    const branch = this._branch(wordOrText);
+    if (branch) {
+      branch.isWord = false;
+      return true;
+    }
+    return false;
+  }
+
+  private _branch(wordOrText: string) {
+    const word = this.tree.word(wordOrText);
+    if (word instanceof Branch) {
+      return word;
+    }
+    const text = this.tree.text(wordOrText);
+    if (text instanceof Branch) {
+      return text;
+    }
+    return null;
+  }
+
   private replaceVariables(text: string, variables: Variables) {
     if (Object.keys(variables).length === 0) {
       return text;
