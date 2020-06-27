@@ -101,27 +101,41 @@ export default class Translate {
   }
 
   // todo: Create test
-  public getBranch(wordOrText: string) {
-    return this._branch(wordOrText);
+  public getWord(word: string) {
+    return this.getBranch(word);
   }
 
+  // todo: Create test
+  public getText(text: string) {
+    return this.getBranch(text, true);
+  }
+
+  // todo: Create test
+  public getBranch(wordOrText: string, isText = false) {
+    return this._branch(wordOrText, isText);
+  }
+
+  // todo: Create test
   public delete(wordOrText: string) {
     const branch = this._branch(wordOrText);
     if (branch) {
       branch.isWord = false;
-      return true;
+      return branch;
     }
-    return false;
+    return null;
   }
 
-  private _branch(wordOrText: string) {
-    const word = this.tree.word(wordOrText);
-    if (word instanceof Branch) {
-      return word;
-    }
-    const text = this.tree.text(wordOrText);
-    if (text instanceof Branch) {
-      return text;
+  private _branch(wordOrText: string, isText = false) {
+    if (!isText) {
+      const word = this.tree.word(wordOrText);
+      if (word instanceof Branch) {
+        return word;
+      }
+    } else {
+      const text = this.tree.text(wordOrText);
+      if (text instanceof Branch) {
+        return text;
+      }
     }
     return null;
   }

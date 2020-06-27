@@ -30,7 +30,7 @@ export default class Empty extends ApiBranch {
     }
   }
 
-  public suggestions() {
+  public suggestions(): Branch[] {
     let words: Branch[];
 
     if ('isWord' in this.branch) {
@@ -39,6 +39,6 @@ export default class Empty extends ApiBranch {
       words = this.branch.suggestions(this.isTreeText);
     }
 
-    return words.map(x => x.word).join(', ');
+    return words;
   }
 }
