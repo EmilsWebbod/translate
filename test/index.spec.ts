@@ -187,6 +187,22 @@ describe('Translation object', () => {
     assert.equal(translation, translated);
   });
 
+  it('should get word branch', () => {
+    const branch = translate.getWord(wordKey);
+    assert.isTrue(branch instanceof Branch);
+  });
+
+  it('should get text branch', () => {
+    const branch = translate.getText(textKey);
+    assert.isTrue(branch instanceof Branch);
+  });
+
+  it('should delete word', () => {
+    translate.delete(wordKey);
+    const empty = translate.getWord(wordKey);
+    assert.isNull(empty);
+  });
+
   describe('Export', () => {
     it('should export words to the same import object', () => {
       const exported = translate.exportWords();
@@ -210,6 +226,13 @@ describe('Translation object', () => {
       const exported = translate.export();
       const newTranslate = new Translate({ ...defaultOptions, ...exported });
       assert.deepEqual(translate, newTranslate);
+    });
+
+    it('active: should export branches on exportBranch', () => {
+      translate.word(wordKey);
+      const exported = translate.exportBranches();
+      console.log(exported[0]);
+      assert.lengthOf(exported, 10);
     });
   });
 });

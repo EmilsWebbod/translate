@@ -187,7 +187,7 @@ describe('Branch sentence', () => {
     const found = branch.find('Hei dette ble fiel');
     if (!found.word) {
       const suggestions = found.suggestions();
-      assert.equal(suggestions, 'Hei dette ble feil');
+      assert.equal(suggestions[0].word, 'Hei dette ble feil');
     }
   });
 

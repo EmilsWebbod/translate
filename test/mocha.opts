@@ -3,4 +3,4 @@
 --full-trace
 --bail
 test/setup.ts
-test/**/*.test.ts test/**/*.test.tsx
+test/**/*.spec.ts

@@ -89,7 +89,7 @@ describe('TranslationAPI', () => {
     }
   });
 
-  it('active: should create app with help of words and text', async () => {
+  it('should create app with help of words and text', async () => {
     try {
       fetchMock.post(`${API_URL}/apps/test`, {});
       const tree = new Tree({ words, texts });

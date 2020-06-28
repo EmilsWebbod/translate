@@ -1,6 +1,6 @@
 import Tree, { WordTranslations, TreeOptions } from './Tree';
 import Empty from './Empty';
-import Branch, { Translations, BranchObject } from './Branch';
+import Branch, { Translations, TranslationUsage, BranchObject } from './Branch';
 import { VARIABLE_REGEXP } from './utils/helpers';
 import { ISO_639_1 } from './utils/iso_639_1';
 import { TranslationApi } from './TranslationApi';
@@ -100,17 +100,18 @@ export default class Translate {
     return this.tree.exportTexts();
   }
 
-  // todo: Create test
+  public exportBranches() {
+    return [...this.tree.suggestions(false), ...this.tree.suggestions(true)];
+  }
+
   public getWord(word: string) {
     return this.getBranch(word);
   }
 
-  // todo: Create test
   public getText(text: string) {
     return this.getBranch(text, true);
   }
 
-  // todo: Create test
   public getBranch(wordOrText: string, isText = false) {
     return this._branch(wordOrText, isText);
   }
@@ -183,5 +184,6 @@ export {
   Variables,
   TextOptions,
   ISO_639_1,
-  TranslationApi
+  TranslationApi,
+  TranslationUsage
 };

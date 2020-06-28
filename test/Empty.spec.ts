@@ -48,7 +48,10 @@ describe('Empty', () => {
     const found = branch.find('abg');
     if (found instanceof Empty) {
       const suggestions = found.suggestions();
-      assert.equal(suggestions, 'abc, abd, abe, abf');
+      assert.equal(
+        suggestions.map(x => x.word).join(', '),
+        'abc, abd, abe, abf'
+      );
     }
   });
 
@@ -85,7 +88,10 @@ describe('Empty tree', () => {
     const found = tree.word('wasd');
     if (found instanceof Empty) {
       const suggestions = found.suggestions();
-      assert.equal(suggestions, 'Test, Tent, Awesome, Awkward, Cool');
+      assert.equal(
+        suggestions.map(x => x.word).join(', '),
+        'Test, Tent, Awesome, Awkward, Cool'
+      );
     } else {
       assert.fail();
     }

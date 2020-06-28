@@ -213,6 +213,7 @@ class Tree {
     word(word: string): Branch | Empty;
 
     suggestions(): Branch[];
+    exportBranches(): Branch[];
     exportWords(): WordTranslation[];
     exportTexts(): WordTranslation[];
 }

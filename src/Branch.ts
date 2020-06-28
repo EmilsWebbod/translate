@@ -12,9 +12,18 @@ export interface Translations {
   [key: string]: string;
 }
 
+export interface TranslationUsage {
+  file: string;
+  stack: string;
+}
+
+const FILTER_STACK_PATHS = /(Branch|Tree|Translate)\./;
+const FILTER_STACK_TRANS = /Translate._branch/;
+
 export default class Branch extends ApiBranch {
   public words: BranchObject = {};
   public isWord: boolean = false;
+  public usageStack: TranslationUsage[] = [];
 
   constructor(
     public level: number,
@@ -74,6 +83,20 @@ export default class Branch extends ApiBranch {
     }
 
     if (this.matchWord(word)) {
+      const error = new Error();
+      if (error.stack) {
+        const pathArr = error.stack.split('\n');
+        const filterPaths = pathArr.filter(x => !x.match(FILTER_STACK_PATHS));
+        const paths = filterPaths.slice(1).map(x => x.split('at ')[1] || '');
+        const file = paths[0].split(' ')[0];
+        const isTranslations = !pathArr.some(x => x.match(FILTER_STACK_TRANS));
+        if (isTranslations && this.usageStack.every(x => x.file !== file)) {
+          this.usageStack.push({
+            file,
+            stack: filterPaths.join('\n')
+          });
+        }
+      }
       return this.isWord ? this : new Empty(this, word, this.sentence);
     }
 
