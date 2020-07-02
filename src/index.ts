@@ -56,10 +56,6 @@ export default class Translate {
     return this.word(word, locale);
   }
   public word(word: string, locale = this.locale) {
-    if (this.defaultLocale === locale) {
-      return word;
-    }
-
     const foundWord = this.tree.word(word);
 
     return this.translateAndRunNoMatch(foundWord, locale);
@@ -72,10 +68,6 @@ export default class Translate {
     text: string,
     { locale = this.locale, ...variables }: TextOptions = {}
   ) {
-    if (this.defaultLocale === locale) {
-      return this.replaceVariables(text, variables);
-    }
-
     const foundText = this.tree.text(text);
     const translated = this.translateAndRunNoMatch(foundText, locale);
     return this.replaceVariables(translated, variables);
@@ -155,6 +147,10 @@ export default class Translate {
       if (typeof this.noMatch === 'function') {
         this.noMatch(this, foundText);
       }
+    }
+
+    if (this.defaultLocale === locale) {
+      return foundText.word;
     }
 
     const translated = foundText.translate(locale);
