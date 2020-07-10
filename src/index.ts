@@ -138,7 +138,7 @@ export default class Translate {
       return text;
     }
     return text.replace(VARIABLE_REGEXP, (word, group) => {
-      return String(variables[group] || word);
+      return String(variables[group] ?? word);
     });
   }
 
