@@ -118,6 +118,10 @@ export default class Translate {
     return null;
   }
 
+  public setLocale(locale: string) {
+    this.locale = locale;
+  }
+
   private _branch(wordOrText: string, isText = false) {
     if (!isText) {
       const word = this.tree.word(wordOrText);
