@@ -36,7 +36,8 @@
   },
   "homepage": "https://github.com/EmilsWebbod/translate#readme",
   "files": [
-    "lib"
+    "lib",
+    "src"
   ],
   "husky": {
     "hooks": {
