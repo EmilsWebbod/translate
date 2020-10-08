@@ -59,7 +59,7 @@ describe('Translation object', () => {
   });
 
   it('should find word and translations', () => {
-    const checkWord = defaultOptions.words[wordKey];
+    const checkWord = defaultOptions.words![wordKey];
     const word = translate.word(wordKey);
     const w = translate.w(wordKey);
     assert.equal(word, checkWord['no-nb']);
@@ -67,7 +67,7 @@ describe('Translation object', () => {
   });
 
   it('should find text and translations', () => {
-    const checkText = defaultOptions.texts[textKey];
+    const checkText = defaultOptions.texts![textKey];
     const text = translate.text(textKey);
     const t = translate.t(textKey);
     assert.equal(text, checkText['no-nb']);
@@ -75,8 +75,8 @@ describe('Translation object', () => {
   });
 
   it('should be able to change language', () => {
-    const word = defaultOptions.words[wordKey];
-    const text = defaultOptions.texts[textKey];
+    const word = defaultOptions.words![wordKey];
+    const text = defaultOptions.texts![textKey];
 
     assert.equal(translate.word(wordKey), word['no-nb']);
     assert.equal(translate.text(textKey), text['no-nb']);
@@ -87,12 +87,12 @@ describe('Translation object', () => {
   });
 
   it('should return word translation on changed option locale', () => {
-    const word = defaultOptions.words[wordKey];
+    const word = defaultOptions.words![wordKey];
     assert.equal(translate.word(wordKey, 'se'), word['se']);
   });
 
   it('should return text translation on changed option locale', () => {
-    const text = defaultOptions.texts[textKey];
+    const text = defaultOptions.texts![textKey];
     assert.equal(
       translate.text(textKey, {
         locale: 'se'
@@ -207,13 +207,13 @@ describe('Translation object', () => {
     it('should export words to the same import object', () => {
       const exported = translate.exportWords();
       assert.lengthOf(Object.keys(exported), wordsLength);
-      assert.deepEqual(exported[wordKey], defaultOptions.words[wordKey]);
+      assert.deepEqual(exported[wordKey], defaultOptions.words![wordKey]);
     });
 
     it('should export text to the same import object', () => {
       const exported = translate.exportTexts();
       assert.lengthOf(Object.keys(exported), textsLength);
-      assert.deepEqual(exported[textKey], defaultOptions.texts[textKey]);
+      assert.deepEqual(exported[textKey], defaultOptions.texts![textKey]);
     });
 
     it('should export text and words', () => {
