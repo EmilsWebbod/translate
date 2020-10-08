@@ -8,10 +8,10 @@ import { TranslationApi } from './TranslationApi';
 type NoMatchFn = (translate: Translate, empty: Empty) => void;
 type NoTranslationFn = (translate: Translate, empty: Branch) => void;
 interface TranslateOptions {
-  defaultLocale: string;
-  locale: string;
-  words: WordTranslations;
-  texts: WordTranslations;
+  defaultLocale?: string;
+  locale?: string;
+  words?: WordTranslations;
+  texts?: WordTranslations;
 
   noMatch?: NoMatchFn;
   noTranslation?: NoTranslationFn;
@@ -25,10 +25,12 @@ interface TextOptions extends Variables {
   locale?: string;
 }
 
+let translate: Translate;
+
 export default class Translate {
-  public defaultLocale: string;
-  public locale: string;
-  public tree: Tree;
+  public defaultLocale: string = '';
+  public locale: string = '';
+  public tree: Tree = new Tree({});
 
   private readonly noMatch: NoMatchFn | undefined;
   private readonly noTranslation: NoTranslationFn | undefined;
@@ -40,7 +42,10 @@ export default class Translate {
     texts = {},
     noMatch,
     noTranslation
-  }: TranslateOptions) {
+  }: TranslateOptions = {}) {
+    if (translate) {
+      return translate;
+    }
     this.defaultLocale = defaultLocale;
     this.locale = locale;
     this.noMatch = noMatch;
@@ -50,6 +55,8 @@ export default class Translate {
       words,
       texts
     });
+
+    translate = this;
   }
 
   public w(word: string, locale?: string) {
