@@ -61,7 +61,7 @@ describe('Branch word', () => {
   });
 
   it('should add translation', () => {
-    const found = branch.find('abc');
+    const found = branch.find('Abc');
 
     if (found instanceof Branch) {
       found.addTranslation('en', 'aaa');
@@ -74,9 +74,9 @@ describe('Branch word', () => {
   });
 
   it('should add translation when lesser is already part of word', () => {
-    const added = branch.add('ab');
+    const added = branch.add('Ab');
     assert.isTrue(added);
-    const found = branch.find('ab') as Branch;
+    const found = branch.find('Ab') as Branch;
     assert.isTrue(found instanceof Branch);
     assert.isTrue(found.isWord);
   });
@@ -97,7 +97,7 @@ describe('Branch word', () => {
   });
 
   it('should get tranlsation', () => {
-    const found = branch.find('abc');
+    const found = branch.find('Abc');
     if (found instanceof Branch) {
       found.addTranslation('en', 'aaa');
       assert.equal(found.translate('en'), 'aaa');
@@ -121,13 +121,13 @@ describe('Branch word', () => {
 
   describe('Translations', () => {
     it('should return Branch object if no translations found', () => {
-      const word = branch.find('abc');
+      const word = branch.find('Abc');
       const translation = word.translate('en');
       assert.isObject(translation);
     });
 
     it('should add translation if not found and added', () => {
-      const word = branch.find('abc');
+      const word = branch.find('Abc');
       const translation = word.translate('en');
 
       if (translation instanceof Branch) {

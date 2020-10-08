@@ -6,21 +6,27 @@ describe('1000 Word testing', () => {
   let translate: Translate;
 
   beforeEach(() => {
-    translate = new Translate({
-      defaultLocale: 'en',
-      locale: 'no-nb',
-      texts: {},
-      words
-    });
+    translate = new Translate(
+      {
+        defaultLocale: 'en',
+        locale: 'no-nb',
+        texts: {},
+        words
+      },
+      true
+    );
   });
 
   it('should find word in a reasonable time', () => {
-    translate = new Translate({
-      defaultLocale: 'en',
-      locale: 'no-nb',
-      texts: {},
-      words
-    });
+    translate = new Translate(
+      {
+        defaultLocale: 'en',
+        locale: 'no-nb',
+        texts: {},
+        words
+      },
+      true
+    );
 
     const random = [
       'baby',

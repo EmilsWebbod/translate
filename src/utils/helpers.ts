@@ -20,9 +20,9 @@ export function suggestions(this: Branch) {
 
 export function getFirst(word: string, isText = false) {
   if (isText) {
-    return word.split(' ')[0].toLowerCase();
+    return word.split(' ')[0].toLocaleLowerCase();
   }
-  return word[0].toLowerCase();
+  return word[0];
 }
 
 export const arrayToObject = <T extends object>(obj: T, item: T) => ({

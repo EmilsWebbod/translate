@@ -154,9 +154,9 @@ export default class Branch extends ApiBranch {
   private getNextCharacter(word: string) {
     if (this.sentence) {
       const split = word.split(' ')[this.level + 1];
-      return split ? split.toLowerCase() : '';
+      return split ? split.toLocaleLowerCase() : '';
     } else {
-      return word[this.level + 1] ? word[this.level + 1].toLowerCase() : '';
+      return word[this.level + 1] || '';
     }
   }
 
@@ -175,15 +175,23 @@ export default class Branch extends ApiBranch {
     if (this.sentence) {
       w = this.word.split(' ')[this.level];
       nw = newWord.split(' ')[this.level];
+      if (w) {
+        w = w.toLocaleLowerCase();
+      }
+      if (nw) {
+        nw = nw.toLocaleLowerCase();
+      }
     } else {
       w = this.word[this.level];
       nw = newWord[this.level];
     }
 
-    return Boolean(w && nw && w.toLowerCase() !== nw.toLowerCase());
+    return Boolean(w && nw && w !== nw);
   }
 
   private matchWord(newWord: string) {
-    return this.word.toLowerCase() === newWord.toLowerCase();
+    return this.sentence
+      ? this.word.toLocaleLowerCase() === newWord.toLocaleLowerCase()
+      : this.word === newWord;
   }
 }

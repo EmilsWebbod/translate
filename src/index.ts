@@ -35,15 +35,18 @@ export default class Translate {
   private readonly noMatch: NoMatchFn | undefined;
   private readonly noTranslation: NoTranslationFn | undefined;
 
-  constructor({
-    defaultLocale = 'en',
-    locale = 'en',
-    words = {},
-    texts = {},
-    noMatch,
-    noTranslation
-  }: TranslateOptions = {}) {
-    if (translate) {
+  constructor(
+    {
+      defaultLocale = 'en',
+      locale = 'en',
+      words = {},
+      texts = {},
+      noMatch,
+      noTranslation
+    }: TranslateOptions = {},
+    overrideNew?: boolean
+  ) {
+    if (!overrideNew && translate) {
       return translate;
     }
     this.defaultLocale = defaultLocale;

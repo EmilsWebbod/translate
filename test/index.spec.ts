@@ -16,10 +16,13 @@ describe('Default translation', () => {
   const textKey = 'This is a test';
 
   beforeEach(() => {
-    translate = new Translate({
-      ...defaultOptions,
-      locale: 'en'
-    });
+    translate = new Translate(
+      {
+        ...defaultOptions,
+        locale: 'en'
+      },
+      true
+    );
   });
 
   it('should return default word translation', () => {
@@ -41,7 +44,7 @@ describe('Translation object', () => {
   const textKey = 'This is a test';
 
   beforeEach(() => {
-    translate = new Translate(defaultOptions);
+    translate = new Translate(defaultOptions, true);
   });
 
   it('should be typeof class', () => {
@@ -53,9 +56,9 @@ describe('Translation object', () => {
   });
 
   it('should set up a default tree with list of words in options', () => {
-    assert.isTrue(translate.tree instanceof Object);
+    assert.isObject(translate.tree);
     assert.isObject(translate.tree.words);
-    assert.isObject(translate.tree.words.t);
+    assert.isObject(translate.tree.words.T);
   });
 
   it('should find word and translations', () => {
@@ -103,12 +106,15 @@ describe('Translation object', () => {
 
   it('should run noMatch function if word not found', () => {
     let empty: any;
-    const _translate = new Translate({
-      ...defaultOptions,
-      noMatch: (_, empty1) => {
-        empty = empty1;
-      }
-    });
+    const _translate = new Translate(
+      {
+        ...defaultOptions,
+        noMatch: (_, empty1) => {
+          empty = empty1;
+        }
+      },
+      true
+    );
     const NW = _translate.word('No');
 
     assert.isTrue(empty && empty instanceof Empty);
@@ -117,12 +123,15 @@ describe('Translation object', () => {
 
   it('should run noMatch function if text not found', () => {
     let empty: any;
-    const _translate = new Translate({
-      ...defaultOptions,
-      noMatch: (_, empty1) => {
-        empty = empty1;
-      }
-    });
+    const _translate = new Translate(
+      {
+        ...defaultOptions,
+        noMatch: (_, empty1) => {
+          empty = empty1;
+        }
+      },
+      true
+    );
     const NW = _translate.text('No translations');
 
     assert.isTrue(empty && empty instanceof Empty);
@@ -131,12 +140,15 @@ describe('Translation object', () => {
 
   it('should run NoTranslation function if translation not found', () => {
     let branch: any;
-    const _translate = new Translate({
-      ...defaultOptions,
-      noTranslation: (_, branch1) => {
-        branch = branch1;
-      }
-    });
+    const _translate = new Translate(
+      {
+        ...defaultOptions,
+        noTranslation: (_, branch1) => {
+          branch = branch1;
+        }
+      },
+      true
+    );
     const NT = _translate.word('Test', 'us');
 
     assert.isTrue(branch && branch instanceof Branch);
@@ -145,12 +157,15 @@ describe('Translation object', () => {
 
   it('should run noMatch function if text not found', () => {
     let branch: any;
-    const _translate = new Translate({
-      ...defaultOptions,
-      noTranslation: (_, branch1) => {
-        branch = branch1;
-      }
-    });
+    const _translate = new Translate(
+      {
+        ...defaultOptions,
+        noTranslation: (_, branch1) => {
+          branch = branch1;
+        }
+      },
+      true
+    );
     const NT = _translate.text('This is a test', {
       locale: 'us'
     });
@@ -224,14 +239,16 @@ describe('Translation object', () => {
 
     it('should create the same translation object with exported data', () => {
       const exported = translate.export();
-      const newTranslate = new Translate({ ...defaultOptions, ...exported });
+      const newTranslate = new Translate(
+        { ...defaultOptions, ...exported },
+        true
+      );
       assert.deepEqual(translate, newTranslate);
     });
 
     it('active: should export branches on exportBranch', () => {
       translate.word(wordKey);
       const exported = translate.exportBranches();
-      console.log(exported[0]);
       assert.lengthOf(exported, 10);
     });
   });
