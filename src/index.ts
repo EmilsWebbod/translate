@@ -132,6 +132,14 @@ export default class Translate {
     this.locale = locale;
   }
 
+  public addWords(words: WordTranslations) {
+    Object.keys(words).forEach(key => this.tree.addText(key, words[key]));
+  }
+
+  public addTexts(texts: WordTranslations) {
+    Object.keys(texts).forEach(key => this.tree.addText(key, texts[key]));
+  }
+
   private _branch(wordOrText: string, isText = false) {
     if (!isText) {
       const word = this.tree.word(wordOrText);
