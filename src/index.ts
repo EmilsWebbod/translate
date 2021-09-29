@@ -42,7 +42,7 @@ export default class Translate {
       words = {},
       texts = {},
       noMatch,
-      noTranslation
+      noTranslation,
     }: TranslateOptions = {},
     overrideNew?: boolean
   ) {
@@ -56,7 +56,7 @@ export default class Translate {
 
     this.tree = new Tree({
       words,
-      texts
+      texts,
     });
 
     translate = this;
@@ -90,7 +90,7 @@ export default class Translate {
   public export() {
     return {
       words: this.exportWords(),
-      texts: this.exportTexts()
+      texts: this.exportTexts(),
     };
   }
 
@@ -133,11 +133,11 @@ export default class Translate {
   }
 
   public addWords(words: WordTranslations) {
-    Object.keys(words).forEach(key => this.tree.addText(key, words[key]));
+    Object.keys(words).forEach((key) => this.tree.addWord(key, words[key]));
   }
 
   public addTexts(texts: WordTranslations) {
-    Object.keys(texts).forEach(key => this.tree.addText(key, texts[key]));
+    Object.keys(texts).forEach((key) => this.tree.addText(key, texts[key]));
   }
 
   private _branch(wordOrText: string, isText = false) {
@@ -203,5 +203,5 @@ export {
   TextOptions,
   ISO_639_1,
   TranslationApi,
-  TranslationUsage
+  TranslationUsage,
 };
