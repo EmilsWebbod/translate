@@ -7,7 +7,7 @@ const defaultOptions: TranslateOptions = {
   defaultLocale: 'en',
   locale: 'no-nb',
   words,
-  texts
+  texts,
 };
 
 describe('Default translation', () => {
@@ -19,7 +19,7 @@ describe('Default translation', () => {
     translate = new Translate(
       {
         ...defaultOptions,
-        locale: 'en'
+        locale: 'en',
       },
       true
     );
@@ -98,7 +98,7 @@ describe('Translation object', () => {
     const text = defaultOptions.texts![textKey];
     assert.equal(
       translate.text(textKey, {
-        locale: 'se'
+        locale: 'se',
       }),
       text['se']
     );
@@ -111,7 +111,7 @@ describe('Translation object', () => {
         ...defaultOptions,
         noMatch: (_, empty1) => {
           empty = empty1;
-        }
+        },
       },
       true
     );
@@ -128,7 +128,7 @@ describe('Translation object', () => {
         ...defaultOptions,
         noMatch: (_, empty1) => {
           empty = empty1;
-        }
+        },
       },
       true
     );
@@ -145,7 +145,7 @@ describe('Translation object', () => {
         ...defaultOptions,
         noTranslation: (_, branch1) => {
           branch = branch1;
-        }
+        },
       },
       true
     );
@@ -162,12 +162,12 @@ describe('Translation object', () => {
         ...defaultOptions,
         noTranslation: (_, branch1) => {
           branch = branch1;
-        }
+        },
       },
       true
     );
     const NT = _translate.text('This is a test', {
-      locale: 'us'
+      locale: 'us',
     });
 
     assert.isTrue(branch && branch instanceof Branch);
@@ -178,7 +178,7 @@ describe('Translation object', () => {
     const text = 'My name is {{name}}';
     const translated = 'Mitt navn er Emil';
     const variable = {
-      name: 'Emil'
+      name: 'Emil',
     };
 
     const translation = translate.text(text, variable);
@@ -197,7 +197,7 @@ describe('Translation object', () => {
     const translated = 'Mitt navn er Emil. Jeg er 30 år gammel.';
     const translation = translate.text(text, {
       name: 'Emil',
-      age: 30
+      age: 30,
     });
     assert.equal(translation, translated);
   });
@@ -251,5 +251,35 @@ describe('Translation object', () => {
       const exported = translate.exportBranches();
       assert.lengthOf(exported, 10);
     });
+  });
+
+  it('should add words with packageName', () => {
+    translate.addWords(
+      { package: { nb: 'pakke' } },
+      {
+        packageName: 'npm-package-name',
+      }
+    );
+    const exported = translate.exportWords({
+      packageName: 'npm-package-name',
+    });
+    assert.hasAllKeys(exported, ['package']);
+  });
+
+  it('should add text with packageName', () => {
+    translate.addTexts(
+      { 'My package test': { nb: 't' } },
+      {
+        packageName: 'npm-package-name',
+      }
+    );
+    const exported = translate.exportTexts({
+      packageName: 'npm-package-name',
+    });
+    const exported2 = translate.exportTexts({
+      packageName: null,
+    });
+    assert.hasAllKeys(exported, ['My package test']);
+    assert.doesNotHaveAllKeys(exported2, ['My package test']);
   });
 });

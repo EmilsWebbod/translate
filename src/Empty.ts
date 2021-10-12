@@ -20,12 +20,18 @@ export default class Empty extends ApiBranch {
   public add(translations: Translations = {}) {
     this.translations = translations;
     if (this.branch instanceof Branch) {
-      this.branch.add(this.word, translations, this.apiID);
+      this.branch.add(this.word, translations, {
+        apiID: this.apiID,
+      });
     } else {
       if (this.isTreeText) {
-        this.branch.addText(this.word, translations, this.apiID);
+        this.branch.addText(this.word, translations, {
+          apiID: this.apiID,
+        });
       } else {
-        this.branch.addWord(this.word, translations, this.apiID);
+        this.branch.addWord(this.word, translations, {
+          apiID: this.apiID,
+        });
       }
     }
   }

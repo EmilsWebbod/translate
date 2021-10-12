@@ -1,6 +1,12 @@
 import Tree, { WordTranslations, TreeOptions } from './Tree';
 import Empty from './Empty';
-import Branch, { Translations, TranslationUsage, BranchObject } from './Branch';
+import Branch, {
+  Translations,
+  TranslationUsage,
+  BranchObject,
+  TranslationAddOptions,
+  TranslationExportFilter,
+} from './Branch';
 import { VARIABLE_REGEXP } from './utils/helpers';
 import { ISO_639_1 } from './utils/iso_639_1';
 import { TranslationApi } from './TranslationApi';
@@ -94,12 +100,12 @@ export default class Translate {
     };
   }
 
-  public exportWords() {
-    return this.tree.exportWords();
+  public exportWords(filter?: TranslationExportFilter) {
+    return this.tree.exportWords(filter);
   }
 
-  public exportTexts() {
-    return this.tree.exportTexts();
+  public exportTexts(filter?: TranslationExportFilter) {
+    return this.tree.exportTexts(filter);
   }
 
   public exportBranches() {
@@ -132,12 +138,16 @@ export default class Translate {
     this.locale = locale;
   }
 
-  public addWords(words: WordTranslations) {
-    Object.keys(words).forEach((key) => this.tree.addWord(key, words[key]));
+  public addWords(words: WordTranslations, opts?: TranslationAddOptions) {
+    Object.keys(words).forEach((key) =>
+      this.tree.addWord(key, words[key], opts)
+    );
   }
 
-  public addTexts(texts: WordTranslations) {
-    Object.keys(texts).forEach((key) => this.tree.addText(key, texts[key]));
+  public addTexts(texts: WordTranslations, opts?: TranslationAddOptions) {
+    Object.keys(texts).forEach((key) =>
+      this.tree.addText(key, texts[key], opts)
+    );
   }
 
   private _branch(wordOrText: string, isText = false) {

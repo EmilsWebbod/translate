@@ -6,7 +6,7 @@ import { Branch } from '../src';
 
 const defaultOptions = {
   words,
-  texts
+  texts,
 };
 
 describe('Tree', () => {
@@ -100,5 +100,24 @@ describe('Tree', () => {
     const suggestions = tree.suggestions(true);
     assert.lengthOf(suggestions, 5);
     assert.isTrue(suggestions[0] instanceof Branch);
+  });
+
+  it('should add extra word and filter out on export', () => {
+    const packageName = 'npm-package-name';
+    tree.addWord(
+      'added',
+      { no: 'lagt til' },
+      {
+        packageName,
+      }
+    );
+    const exported = tree.exportWords({
+      packageName: null,
+    });
+    const exported2 = tree.exportWords({
+      packageName,
+    });
+    assert.doesNotHaveAnyKeys(exported, ['added']);
+    assert.hasAllKeys(exported2, ['added']);
   });
 });

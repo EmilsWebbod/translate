@@ -17,6 +17,16 @@ export interface TranslationUsage {
   stack: string;
 }
 
+export interface TranslationAddOptions {
+  apiID?: string;
+  packageName?: string | null; // null is root package
+}
+
+export type TranslationExportFilter = Pick<
+  TranslationAddOptions,
+  'packageName'
+>;
+
 const FILTER_STACK_PATHS = /(Branch|Tree|Translate)\./;
 const FILTER_STACK_TRANS = /Translate._branch/;
 
@@ -24,13 +34,15 @@ export default class Branch extends ApiBranch {
   public words: BranchObject = {};
   public isWord: boolean = false;
   public usageStack: TranslationUsage[] = [];
+  public readonly apiID: string = '';
+  public readonly packageName: string | null = null;
 
   constructor(
     public level: number,
     word: string,
     public sentence: boolean = false,
     translations: Translations = {},
-    apiID = ''
+    opts: TranslationAddOptions = {}
   ) {
     super(getWord(level, word, sentence));
     const char = this.getNextCharacter(word);
@@ -41,16 +53,21 @@ export default class Branch extends ApiBranch {
         word,
         sentence,
         translations,
-        apiID
+        opts
       );
     } else {
       this.translations = translations;
       this.isWord = true;
-      this.apiID = apiID;
+      this.apiID = opts?.apiID || '';
+      this.packageName = opts?.packageName || null;
     }
   }
 
-  public add(newWord: string, translations?: Translations, apiID?: string) {
+  public add(
+    newWord: string,
+    translations?: Translations,
+    opts: TranslationAddOptions = {}
+  ) {
     if (this.match(newWord)) {
       if (!this.isWord) {
         this.isWord = true;
@@ -63,14 +80,14 @@ export default class Branch extends ApiBranch {
     const char = this.getNextCharacter(newWord);
 
     if (this.words[char]) {
-      this.words[char].add(newWord, translations, apiID);
+      this.words[char].add(newWord, translations, opts);
     } else {
       this.words[char] = new Branch(
         this.level + 1,
         newWord,
         this.sentence,
         translations,
-        apiID
+        opts
       );
     }
 
@@ -86,14 +103,16 @@ export default class Branch extends ApiBranch {
       const error = new Error();
       if (error.stack) {
         const pathArr = error.stack.split('\n');
-        const filterPaths = pathArr.filter(x => !x.match(FILTER_STACK_PATHS));
-        const paths = filterPaths.slice(1).map(x => x.split('at ')[1] || '');
+        const filterPaths = pathArr.filter((x) => !x.match(FILTER_STACK_PATHS));
+        const paths = filterPaths.slice(1).map((x) => x.split('at ')[1] || '');
         const file = paths[0].split(' ')[0];
-        const isTranslations = !pathArr.some(x => x.match(FILTER_STACK_TRANS));
-        if (isTranslations && this.usageStack.every(x => x.file !== file)) {
+        const isTranslations = !pathArr.some((x) =>
+          x.match(FILTER_STACK_TRANS)
+        );
+        if (isTranslations && this.usageStack.every((x) => x.file !== file)) {
           this.usageStack.push({
             file,
-            stack: filterPaths.join('\n')
+            stack: filterPaths.join('\n'),
           });
         }
       }
@@ -130,25 +149,41 @@ export default class Branch extends ApiBranch {
   }
 
   public wordCount(): number {
-    return this.map(x => x.wordCount()).reduce(add, 0) + 1;
+    return this.map((x) => x.wordCount()).reduce(add, 0) + 1;
   }
 
-  public export(): WordTranslations {
-    return this.isWord
-      ? {
+  public export(filter?: TranslationExportFilter): WordTranslations {
+    if (this.isWord) {
+      if (this.notFiltered(filter)) {
+        return {
           [this.word]: this.translations,
-          ...this.map(x => x.export()).reduce(arrayToObject, {})
-        }
-      : this.map(x => x.export()).reduce(arrayToObject, {});
+          ...this.map((x) => x.export(filter)).reduce(arrayToObject, {}),
+        };
+      }
+    }
+    return this.map((x) => x.export(filter)).reduce(arrayToObject, {});
   }
 
   public toString(): string {
     const str = `${this.level} ${this.word} \n`;
-    return str + this.map(x => x.toString()).join('');
+    return str + this.map((x) => x.toString()).join('');
   }
 
   public map(fn: (branch: Branch) => any) {
-    return Object.keys(this.words).map(k => fn(this.words[k]));
+    return Object.keys(this.words).map((k) => fn(this.words[k]));
+  }
+
+  private notFiltered(filter?: TranslationExportFilter) {
+    if (!filter) {
+      return true;
+    }
+    if (
+      typeof filter.packageName === 'undefined' ||
+      filter.packageName === this.packageName
+    ) {
+      return true;
+    }
+    return false;
   }
 
   private getNextCharacter(word: string) {

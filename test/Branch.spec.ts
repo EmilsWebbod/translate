@@ -11,7 +11,7 @@ const words: WordTranslations = {
   Abcd: {},
   Abd: {},
   Acd: {},
-  Adc: {}
+  Adc: {},
 };
 
 describe('Branch word', () => {
@@ -19,7 +19,7 @@ describe('Branch word', () => {
 
   beforeEach(() => {
     branch = new Branch(0, 'Abc');
-    Object.keys(words).map(k => branch.add(k));
+    Object.keys(words).map((k) => branch.add(k));
   });
 
   afterEach(() => fetchMock.restore());
@@ -81,6 +81,36 @@ describe('Branch word', () => {
     assert.isTrue(found.isWord);
   });
 
+  it('should add word and add package name to branch', () => {
+    const packageName = 'npm-package-name';
+    branch.add(
+      'Abcde',
+      { nb: 'Abcde' },
+      {
+        packageName: 'npm-package-name',
+      }
+    );
+    const b = branch.find('Abcde');
+    if (b instanceof Branch) {
+      assert.equal(b.packageName, packageName);
+    } else {
+      assert.fail('b is not instance of Branch');
+    }
+  });
+
+  it('should add word and add only export part of package', () => {
+    const packageName = 'npm-package-name';
+    branch.add(
+      'Abcde',
+      { nb: 'Abcde' },
+      {
+        packageName,
+      }
+    );
+    const exported = branch.export({ packageName });
+    assert.hasAllKeys(exported, ['Abcde']);
+  });
+
   it('should return Empty if invalid find value', () => {
     const found = branch.find(undefined as any);
     assert.isTrue(found instanceof Empty);
@@ -113,7 +143,7 @@ describe('Branch word', () => {
 
   it('should export words to object', () => {
     const exported = branch.export();
-    Object.keys(words).map(x => {
+    Object.keys(words).map((x) => {
       const found = exported[x];
       assert.deepEqual(found, words[x]);
     });
@@ -194,7 +224,7 @@ describe('Branch sentence', () => {
   it('should add text with variable', () => {
     const text = 'Hei Sentence with {{length}} words';
     branch.add(text, {
-      'no-nb': 'Hei en setning med {{length}} words'
+      'no-nb': 'Hei en setning med {{length}} words',
     });
     const found = branch.find(text);
     assert.isTrue(found instanceof Branch);
