@@ -15,7 +15,7 @@
     "coverage": "nyc mocha -r ts-node/register test/**/*.spec.ts",
     "coveralls": "yarn coverage | coveralls",
     "postversion": "git push && git push --tags",
-    "prepublish": "npm run build",
+    "prepublish": "npm run test && npm run build",
     "preversion": "npm run build"
   },
   "repository": {
