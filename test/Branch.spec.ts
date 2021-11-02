@@ -73,12 +73,20 @@ describe('Branch word', () => {
     }
   });
 
-  it('should add translation when lesser is already part of word', () => {
+  it('should add word when lesser is already part of word', () => {
     const added = branch.add('Ab');
     assert.isTrue(added);
     const found = branch.find('Ab') as Branch;
     assert.isTrue(found instanceof Branch);
     assert.isTrue(found.isWord);
+  });
+
+  it('should add word when lesser is already part of word and add transation', () => {
+    const added = branch.add('Ab', { en: 'Eng' });
+    assert.isTrue(added);
+    const found = branch.find('Ab') as Branch;
+    found.translate('en');
+    assert.equal(found.translate('en'), 'Eng');
   });
 
   it('should add word and add package name to branch', () => {

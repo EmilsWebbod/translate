@@ -34,8 +34,7 @@ export default class Branch extends ApiBranch {
   public words: BranchObject = {};
   public isWord: boolean = false;
   public usageStack: TranslationUsage[] = [];
-  public readonly apiID: string = '';
-  public readonly packageName: string | null = null;
+  public packageName: string | null = null;
 
   constructor(
     public level: number,
@@ -57,10 +56,14 @@ export default class Branch extends ApiBranch {
       );
     } else {
       this.translations = translations;
-      this.isWord = true;
-      this.apiID = opts?.apiID || '';
-      this.packageName = opts?.packageName || null;
+      this.init(opts);
     }
+  }
+
+  public init(opts: TranslationAddOptions) {
+    this.isWord = true;
+    this.apiID = opts?.apiID || '';
+    this.packageName = opts?.packageName || null;
   }
 
   public add(
@@ -70,7 +73,8 @@ export default class Branch extends ApiBranch {
   ) {
     if (this.match(newWord)) {
       if (!this.isWord) {
-        this.isWord = true;
+        this.translations = { ...this.translations, ...translations };
+        this.init(opts);
         return true;
       } else {
         return false;
