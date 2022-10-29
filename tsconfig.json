@@ -1,25 +1,22 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "rootDir": "src",
     "target": "es6",
+    "outDir": "dist",
     "moduleResolution": "node",
-    "module": "commonjs",
+    "module": "CommonJS",
     "declaration": true,
-    "outDir": "./lib",
     "strict": true,
-    "jsx": "react",
-    "sourceMap": true,
-    "lib": ["dom", "es7", "es5", "ES2015", "es2019"],
-    "skipLibCheck": true,
+    "noImplicitAny": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "jsx": "react",
+    "sourceMap": false,
+    "lib": ["dom", "es7", "ES2019"],
+    "skipLibCheck": true
   },
   "include": ["src"],
-  "exclude": [
-    "node_modules",
-    "lib",
-    "src/**/*.spec.*",
-    "src/**/story.tsx",
-    "src/**/**/story.tsx"
-  ]
+  "exclude": ["node_modules"]
 }

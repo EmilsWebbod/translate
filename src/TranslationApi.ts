@@ -2,7 +2,7 @@ import { Translations } from './Branch';
 import { ISO_639_1 } from './utils/iso_639_1';
 import { WordTranslations } from './Tree';
 
-export { ISO_639_1 };
+export type { ISO_639_1 };
 
 export type ApiTranslationValue = {
   [key in ISO_639_1]?: TranslationPopulated[];
@@ -46,7 +46,7 @@ export class TranslationApi {
     for (const language of languages) {
       if (language in obj && obj[language] && Array.isArray(obj[language])) {
         const translation = obj[language]!;
-        translations[language] = translation.map(x => x.value).join(',');
+        translations[language] = translation.map((x) => x.value).join(',');
       }
     }
     return translations;
@@ -54,10 +54,10 @@ export class TranslationApi {
 
   private apiOpts: Partial<RequestInit> = {
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
     },
     mode: 'no-cors',
-    credentials: 'omit'
+    credentials: 'omit',
   };
 
   constructor(readonly url: string = '') {
@@ -81,12 +81,12 @@ export class TranslationApi {
   ): Promise<ApiTranslation> {
     const queries = [
       language ? `language=${language}` : '',
-      languages.length > 0 ? `populate=${languages.join(',')}` : ''
+      languages.length > 0 ? `populate=${languages.join(',')}` : '',
     ]
       .filter(Boolean)
       .join('&');
     const res = await fetch(`${this.url}/translations/${wordOrId}?${queries}`, {
-      credentials: 'omit'
+      credentials: 'omit',
     });
     if (res.status > 400) {
       throw new Error(res.statusText);
@@ -96,7 +96,7 @@ export class TranslationApi {
 
   public async search(query: Query = {}): Promise<ApiTranslation[]> {
     const queries = (Object.keys(query) as Array<keyof Query>)
-      .map(key => `${key}=${query[key]}`)
+      .map((key) => `${key}=${query[key]}`)
       .join('&');
     const res = await fetch(`${this.url}/translations?${queries}`);
     if (res.status > 400) {
@@ -109,7 +109,7 @@ export class TranslationApi {
     const res = await fetch(`${this.url}/translations`, {
       method: 'POST',
       body: this.dataToBody(data),
-      ...this.apiOpts
+      ...this.apiOpts,
     });
     if (res.status > 400) {
       console.error(res);
@@ -125,7 +125,7 @@ export class TranslationApi {
     const res = await fetch(`${this.url}/translations/${idOrValue}`, {
       method: 'PUT',
       body: this.dataToBody(data),
-      ...this.apiOpts
+      ...this.apiOpts,
     });
     if (res.status > 400) {
       throw new Error(res.statusText);
@@ -141,13 +141,13 @@ export class TranslationApi {
     const res = await fetch(`${this.url}/apps/${app}`, {
       method: 'POST',
       body: JSON.stringify({
-        words: Object.keys(words).map(value => ({ value, ...words[value] })),
-        texts: Object.keys(texts).map(value => ({ value, ...texts[value] }))
+        words: Object.keys(words).map((value) => ({ value, ...words[value] })),
+        texts: Object.keys(texts).map((value) => ({ value, ...texts[value] })),
       }),
       ...this.apiOpts,
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
     if (res.status > 400) {
       throw new Error(res.statusText);
@@ -158,7 +158,7 @@ export class TranslationApi {
   private dataToBody<T extends URIComponent>(data: T) {
     return (Object.keys(data) as Array<keyof T>)
       .map(
-        key =>
+        (key) =>
           `${encodeURIComponent(String(key))}=${encodeURIComponent(data[key])}`
       )
       .join('&');

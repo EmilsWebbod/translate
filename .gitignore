@@ -9,3 +9,4 @@ lib/
 .nyc_output
 
 yarn-error.log
+tsconfig.tsbuildinfo

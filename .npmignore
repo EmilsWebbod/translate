@@ -1,0 +1,23 @@
+# Folders
+.husky/
+.idea/
+.circleci/
+.nyc_output/
+node_modules/
+test/
+src/
+
+# Typescript
+*.ts
+*.js.map
+!*.d.ts
+
+# Project files
+.gitattributes
+.gitignore
+.prettierrc
+.nycrc
+tsconfig.json
+tsconfig.tsbuildinfo
+tslint.json
+yarn.lock

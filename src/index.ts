@@ -199,11 +199,13 @@ export default class Translate {
   }
 }
 
+module.exports = Translate;
+
 export {
   Tree,
   Empty,
   Branch,
-  Translate,
+  TranslationApi,
   TranslateOptions,
   WordTranslations,
   TreeOptions,
@@ -212,6 +214,5 @@ export {
   Variables,
   TextOptions,
   ISO_639_1,
-  TranslationApi,
   TranslationUsage,
 };
