@@ -3,7 +3,7 @@ import * as fetchMock from 'fetch-mock';
 
 import Empty from '../src/Empty';
 import Branch from '../src/Branch';
-import { Tree } from '../src';
+import Tree from '../src/Tree';
 import { texts, words } from './mocks';
 import { ISO_639_1, TranslationApi } from '../src/TranslationApi';
 import { mockApiUrl, mockTranslationAllo } from './mocks/apiTranslations';
@@ -49,7 +49,7 @@ describe('Empty', () => {
     if (found instanceof Empty) {
       const suggestions = found.suggestions();
       assert.equal(
-        suggestions.map(x => x.word).join(', '),
+        suggestions.map((x) => x.word).join(', '),
         'abc, abd, abe, abf'
       );
     }
@@ -89,7 +89,7 @@ describe('Empty tree', () => {
     if (found instanceof Empty) {
       const suggestions = found.suggestions();
       assert.equal(
-        suggestions.map(x => x.word).join(', '),
+        suggestions.map((x) => x.word).join(', '),
         'Test, Tent, Awesome, Awkward, Cool'
       );
     } else {

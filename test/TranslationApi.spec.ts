@@ -5,10 +5,10 @@ import { ISO_639_1, TranslationApi } from '../src/TranslationApi';
 import {
   mockApiUrl,
   mockTranslation,
-  mockTranslations
+  mockTranslations,
 } from './mocks/apiTranslations';
 import { API_URL } from './mocks/utils';
-import { Tree } from '../src';
+import Tree from '../src/Tree';
 import { texts, words } from './mocks';
 
 describe('TranslationAPI', () => {
@@ -18,7 +18,7 @@ describe('TranslationAPI', () => {
     language: mockTranslation.language,
     type: mockTranslation.type,
     en: ['translation'],
-    no: ['oversettelse']
+    no: ['oversettelse'],
   };
 
   afterEach(() => fetchMock.restore());
@@ -116,10 +116,10 @@ describe('TranslationAPI', () => {
     it('should parse translations', () => {
       const transformed = TranslationApi.parseTranslations(mockTranslation, [
         'en',
-        'nb'
+        'nb',
       ]);
       assert.deepEqual(transformed, {
-        nb: 'hei'
+        nb: 'hei',
       });
     });
   });
@@ -142,7 +142,7 @@ describe('TranslationAPI', () => {
         const res = await TranslationApi.of().post({
           type: 'word',
           language: 'en',
-          value: 'hello'
+          value: 'hello',
         });
         assert.equal(res.value, 'hello');
       } catch (e) {
@@ -155,7 +155,7 @@ describe('TranslationAPI', () => {
       try {
         const hello = await TranslationApi.of().get('hello');
         const res = await TranslationApi.of().put(hello._id, {
-          nb: ['hei', 'halla']
+          nb: ['hei', 'halla'],
         });
         assert.equal(res.value, 'hello');
         // @ts-ignore

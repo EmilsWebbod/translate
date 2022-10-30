@@ -2,9 +2,10 @@ import { assert } from 'chai';
 import * as fetchMock from 'fetch-mock';
 
 import Branch from '../src/Branch';
-import { Empty, WordTranslations } from '../src';
+import Empty from '../src/Empty';
 import { ISO_639_1, TranslationApi } from '../src/TranslationApi';
 import { mockApiUrl, mockTranslationAbc } from './mocks/apiTranslations';
+import type { WordTranslations } from '../src';
 
 const words: WordTranslations = {
   Abc: {},

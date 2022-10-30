@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import Tree from '../src/Tree';
 import { texts, words } from './mocks';
 import Empty from '../src/Empty';
-import { Branch } from '../src';
+import Branch from '../src/Branch';
 
 const defaultOptions = {
   words,

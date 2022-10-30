@@ -1,7 +1,9 @@
 import { assert } from 'chai';
-import Translate, { Branch, TranslateOptions } from '../src';
+import type { TranslateOptions } from '../src';
+import Branch from '../src/Branch';
 import { texts, words } from './mocks';
 import Empty from '../src/Empty';
+import Translate from '../src/Translate';
 
 const defaultOptions: TranslateOptions = {
   defaultLocale: 'en',
