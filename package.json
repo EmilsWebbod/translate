@@ -1,6 +1,6 @@
 {
   "name": "@ewb/translate",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "description": "Translate as you create your app. Saves the words and text in a tree structure for fast and easy lookup.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
