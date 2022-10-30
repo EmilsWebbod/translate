@@ -1,6 +1,7 @@
 import { assert } from 'chai';
-import Translate, { Branch } from '../src';
+import Branch from '../src/Branch';
 import { words } from './mocks/words';
+import Translate from '../src/Translate';
 
 describe('1000 Word testing', () => {
   let translate: Translate;
@@ -11,7 +12,7 @@ describe('1000 Word testing', () => {
         defaultLocale: 'en',
         locale: 'no-nb',
         texts: {},
-        words
+        words,
       },
       true
     );
@@ -23,7 +24,7 @@ describe('1000 Word testing', () => {
         defaultLocale: 'en',
         locale: 'no-nb',
         texts: {},
-        words
+        words,
       },
       true
     );
@@ -46,11 +47,11 @@ describe('1000 Word testing', () => {
       'customer',
       'final',
       'help',
-      'executive'
+      'executive',
     ];
 
     console.time('find');
-    const found = random.map(x => translate.tree.word(x));
+    const found = random.map((x) => translate.tree.word(x));
     console.timeEnd('find');
 
     assert.isTrue(found[0] instanceof Branch);

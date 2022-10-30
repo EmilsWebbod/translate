@@ -3,9 +3,10 @@ import * as fetchMock from 'fetch-mock';
 import {
   mockApiUrl,
   mockTranslation,
-  mockTranslations
+  mockTranslations,
 } from './mocks/apiTranslations';
-import { Branch, Empty } from '../src';
+import Branch from '../src/Branch';
+import Empty from '../src/Empty';
 import { API_URL } from './mocks/utils';
 
 describe('ApiBranch', () => {
