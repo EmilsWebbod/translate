@@ -23,7 +23,6 @@ export interface TextOptions extends Variables {
   locale?: string;
 }
 
-module.exports = Translate;
 export default Translate;
 export {
   Tree,
