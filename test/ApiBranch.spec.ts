@@ -32,7 +32,7 @@ describe('ApiBranch', () => {
     assert.isTrue(empty instanceof Empty);
     try {
       await empty.fromApi('en', ['en', 'nb']);
-    } catch (e) {
+    } catch (e: any) {
       assert.ok(e);
     }
   });

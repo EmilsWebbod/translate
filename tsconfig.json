@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "rootDir": "src",
     "target": "es6",
-    "outDir": "dist",
+    "outDir": "lib",
     "moduleResolution": "node",
     "module": "CommonJS",
     "declaration": true,

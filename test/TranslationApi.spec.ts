@@ -35,7 +35,7 @@ describe('TranslationAPI', () => {
       assert.isObject(res);
       assert.equal(res.value, key);
       assert.isArray(res.nb);
-    } catch (e) {
+    } catch (e: any) {
       assert.fail(e.message);
     }
   });
@@ -49,7 +49,7 @@ describe('TranslationAPI', () => {
       assert.isObject(res);
       assert.equal(res.value, key);
       assert.isArray(res.nb);
-    } catch (e) {
+    } catch (e: any) {
       assert.fail(e.message);
     }
   });
@@ -59,7 +59,7 @@ describe('TranslationAPI', () => {
       fetchMock.get(`${API_URL}/translations?`, mockTranslations);
       const res = await translation.search();
       assert.isArray(res);
-    } catch (e) {
+    } catch (e: any) {
       assert.fail(e.message);
     }
   });
@@ -70,7 +70,7 @@ describe('TranslationAPI', () => {
       const res = await translation.post(postData);
       assert.isObject(res);
       assert.deepEqual(res, mockTranslation);
-    } catch (e) {
+    } catch (e: any) {
       assert.fail(e.message);
     }
   });
@@ -84,7 +84,7 @@ describe('TranslationAPI', () => {
       const res = await translation.put(mockTranslation._id, postData);
       assert.isObject(res);
       assert.deepEqual(res, mockTranslation);
-    } catch (e) {
+    } catch (e: any) {
       assert.fail(e.message);
     }
   });
@@ -101,7 +101,7 @@ describe('TranslationAPI', () => {
         treeTexts
       );
       assert.isObject(res);
-    } catch (e) {
+    } catch (e: any) {
       assert.fail(e.message);
     }
   });
@@ -145,7 +145,7 @@ describe('TranslationAPI', () => {
           value: 'hello',
         });
         assert.equal(res.value, 'hello');
-      } catch (e) {
+      } catch (e: any) {
         console.error(e);
         assert.ok(e, e.message);
       }
@@ -160,7 +160,7 @@ describe('TranslationAPI', () => {
         assert.equal(res.value, 'hello');
         // @ts-ignore
         assert.isAtLeast(res.nb.length, 2);
-      } catch (e) {
+      } catch (e: any) {
         console.error(e);
         assert.ok(e, e.message);
       }
