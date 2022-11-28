@@ -9,7 +9,7 @@ src/
 
 # Typescript
 *.ts
-*.js.map
+*.map
 !*.d.ts
 
 # Project files

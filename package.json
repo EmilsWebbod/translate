@@ -1,6 +1,6 @@
 {
   "name": "@ewb/translate",
-  "version": "1.9.5",
+  "version": "2.0.0",
   "type": "module",
   "description": "Translate as you create your app. Saves the words and text in a tree structure for fast and easy lookup.",
   "main": "./lib/index.js",
@@ -10,9 +10,9 @@
     "build": "tsc",
     "build:watch": "tsc --watch --incremental",
     "lint": "tslint --project \"./tsconfig.json\"",
-    "test": "vitest",
+    "test": "vitest run",
     "test:ui": "vitest --ui --api 9527",
-    "test:run": "vitest run",
+    "test:watch": "vitest",
     "postversion": "git push && git push --tags",
     "prepublish": "npm run test && npm run build",
     "preversion": "npm run build"
