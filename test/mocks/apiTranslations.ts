@@ -1,5 +1,7 @@
-import { ApiTranslation } from '../../src/TranslationApi';
+import {ApiTranslation, TranslationApi} from '../../src/TranslationApi';
 import { API_URL } from './utils';
+
+export const translation = new TranslationApi(API_URL);
 
 export const mockApiUrl = (key: string, lang: string, populate: string) =>
   `${API_URL}/translations/${key}?language=${lang}&populate=${populate}`;

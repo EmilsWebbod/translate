@@ -1,7 +1,7 @@
-import { assert } from 'chai';
-import Branch from '../src/Branch';
-import { words } from './mocks/words';
-import Translate from '../src/Translate';
+import { assert, beforeEach, describe, it } from 'vitest';
+import Branch from '../src/Branch.js';
+import { words } from './mocks/words.js';
+import Translate from '../src/Translate.js';
 
 describe('1000 Word testing', () => {
   let translate: Translate;

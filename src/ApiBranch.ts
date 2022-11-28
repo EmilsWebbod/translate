@@ -3,8 +3,8 @@ import {
   ApiTranslation,
   ISO_639_1,
   TranslationApi
-} from './TranslationApi';
-import { Translations } from './Branch';
+} from './TranslationApi.js';
+import { Translations } from './Branch.js';
 
 export default abstract class ApiBranch {
   public readonly word: string = '';

@@ -1,4 +1,4 @@
-import Branch from '../Branch';
+import Branch from '../Branch.js';
 
 export const VARIABLE_REGEXP = /{{(.*?)}}/g;
 

@@ -1,11 +1,11 @@
-import Tree, { WordTranslations } from './Tree';
+import Tree, { WordTranslations } from './Tree.js';
 import Branch, {
   TranslationAddOptions,
   TranslationExportFilter,
-} from './Branch';
-import { VARIABLE_REGEXP } from './utils/helpers';
-import Empty from './Empty';
-import { TextOptions, TranslateOptions, Variables } from './index';
+} from './Branch.js';
+import { VARIABLE_REGEXP } from './utils/helpers.js';
+import Empty from './Empty.js';
+import { TextOptions, TranslateOptions, Variables } from './index.js';
 
 export type NoMatchFn = (translate: Translate, empty: Empty) => void;
 export type NoTranslationFn = (translate: Translate, empty: Branch) => void;

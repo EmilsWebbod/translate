@@ -1,8 +1,8 @@
-import { assert } from 'chai';
-import Tree from '../src/Tree';
-import { texts, words } from './mocks';
-import Empty from '../src/Empty';
-import Branch from '../src/Branch';
+import { assert, beforeEach, describe, it } from 'vitest';
+import Tree from '../src/Tree.js';
+import { texts, words } from './mocks/index.js';
+import Empty from '../src/Empty.js';
+import Branch from '../src/Branch.js';
 
 const defaultOptions = {
   words,

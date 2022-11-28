@@ -1,12 +1,12 @@
-import { assert } from 'chai';
+import { afterEach, assert, beforeEach, describe, it } from 'vitest';
 import * as fetchMock from 'fetch-mock';
 
-import Empty from '../src/Empty';
-import Branch from '../src/Branch';
-import Tree from '../src/Tree';
-import { texts, words } from './mocks';
-import { ISO_639_1, TranslationApi } from '../src/TranslationApi';
-import { mockApiUrl, mockTranslationAllo } from './mocks/apiTranslations';
+import Empty from '../src/Empty.js';
+import Branch from '../src/Branch.js';
+import Tree from '../src/Tree.js';
+import { texts, words } from './mocks/index.js';
+import { ISO_639_1, TranslationApi } from '../src/TranslationApi.js';
+import { mockApiUrl, mockTranslationAllo } from './mocks/apiTranslations.js';
 
 describe('Empty', () => {
   let branch: Branch;
@@ -21,7 +21,9 @@ describe('Empty', () => {
     empty = branch.find('abcd') as Empty;
   });
 
-  afterEach(() => fetchMock.restore());
+  afterEach(() => {
+    fetchMock.restore()
+  });
 
   it('should be class and created with branch', () => {
     assert.isTrue(Empty instanceof Object);

@@ -4,36 +4,20 @@ import Branch, { BranchObject, Translations, TranslationUsage } from './Branch.j
 import { ISO_639_1 } from './utils/iso_639_1.js';
 import { TranslationApi } from './TranslationApi.js';
 import Translate, { NoMatchFn, NoTranslationFn } from './Translate.js';
-
 export interface TranslateOptions {
-  defaultLocale?: string;
-  locale?: string;
-  words?: WordTranslations;
-  texts?: WordTranslations;
-
-  noMatch?: NoMatchFn;
-  noTranslation?: NoTranslationFn;
+    defaultLocale?: string;
+    locale?: string;
+    words?: WordTranslations;
+    texts?: WordTranslations;
+    noMatch?: NoMatchFn;
+    noTranslation?: NoTranslationFn;
 }
-
 export interface Variables {
-  [variable: string]: string | number | undefined;
+    [variable: string]: string | number | undefined;
 }
-
 export interface TextOptions extends Variables {
-  locale?: string;
+    locale?: string;
 }
-
-module.exports = Translate;
 export default Translate;
-export {
-  Tree,
-  Empty,
-  Branch,
-  TranslationApi,
-  WordTranslations,
-  TreeOptions,
-  Translations,
-  BranchObject,
-  ISO_639_1,
-  TranslationUsage,
-};
+export { Tree, Empty, Branch, TranslationApi, WordTranslations, TreeOptions, Translations, BranchObject, ISO_639_1, TranslationUsage, };
+//# sourceMappingURL=index.d.ts.map

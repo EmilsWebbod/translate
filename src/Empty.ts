@@ -1,6 +1,6 @@
-import Branch, { Translations } from './Branch';
-import Tree from './Tree';
-import ApiBranch from './ApiBranch';
+import Branch, { Translations } from './Branch.js';
+import Tree from './Tree.js';
+import ApiBranch from './ApiBranch.js';
 
 export default class Empty extends ApiBranch {
   public apiID = '';

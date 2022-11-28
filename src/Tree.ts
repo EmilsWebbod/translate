@@ -3,9 +3,9 @@ import Branch, {
   TranslationAddOptions,
   TranslationExportFilter,
   Translations,
-} from './Branch';
-import Empty from './Empty';
-import { arrayToObject, getFirst } from './utils/helpers';
+} from './Branch.js';
+import Empty from './Empty.js';
+import { arrayToObject, getFirst } from './utils/helpers.js';
 
 export interface WordTranslations {
   [translate: string]: {

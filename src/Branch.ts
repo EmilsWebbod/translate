@@ -1,8 +1,8 @@
-import Empty from './Empty';
-import { add } from './utils/math';
-import { arrayToObject, getWord, suggestions } from './utils/helpers';
-import { WordTranslations } from './Tree';
-import ApiBranch from './ApiBranch';
+import Empty from './Empty.js';
+import { add } from './utils/math.js';
+import { arrayToObject, getWord, suggestions } from './utils/helpers.js';
+import { WordTranslations } from './Tree.js';
+import ApiBranch from './ApiBranch.js';
 
 export interface BranchObject {
   [key: string]: Branch;
@@ -105,19 +105,23 @@ export default class Branch extends ApiBranch {
 
     if (this.matchWord(word)) {
       const error = new Error();
-      if (error.stack) {
-        const pathArr = error.stack.split('\n');
-        const filterPaths = pathArr.filter((x) => !x.match(FILTER_STACK_PATHS));
-        const paths = filterPaths.slice(1).map((x) => x.split('at ')[1] || '');
-        const file = paths[0].split(' ')[0];
-        const isTranslations = !pathArr.some((x) =>
-          x.match(FILTER_STACK_TRANS)
-        );
-        if (isTranslations && this.usageStack.every((x) => x.file !== file)) {
-          this.usageStack.push({
-            file,
-            stack: filterPaths.join('\n'),
-          });
+      if (error && error.stack) {
+        try {
+          const pathArr = error.stack.split('\n');
+          const filterPaths = pathArr.filter((x) => !x.match(FILTER_STACK_PATHS));
+          const paths = filterPaths.slice(1).map((x) => x.split('at ')[1] || '');
+          const file = paths[0].split(' ')[0];
+          const isTranslations = !pathArr.some((x) =>
+            x.match(FILTER_STACK_TRANS)
+          );
+          if (isTranslations && this.usageStack.every((x) => x.file !== file)) {
+            this.usageStack.push({
+              file,
+              stack: filterPaths.join('\n'),
+            });
+          }
+        } catch (e) {
+          console.error('Stack error', error);
         }
       }
       return this.isWord ? this : new Empty(this, word, this.sentence);

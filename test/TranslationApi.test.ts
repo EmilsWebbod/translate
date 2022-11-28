@@ -1,18 +1,17 @@
-import { assert } from 'chai';
+import { afterEach, beforeEach, assert, describe, it } from 'vitest';
 import * as fetchMock from 'fetch-mock';
 
 import { ISO_639_1, TranslationApi } from '../src/TranslationApi';
 import {
   mockApiUrl,
   mockTranslation,
-  mockTranslations,
+  mockTranslations, translation,
 } from './mocks/apiTranslations';
 import { API_URL } from './mocks/utils';
 import Tree from '../src/Tree';
 import { texts, words } from './mocks';
 
 describe('TranslationAPI', () => {
-  const translation = new TranslationApi(API_URL);
   const postData = {
     value: mockTranslation.value,
     language: mockTranslation.language,
@@ -21,7 +20,9 @@ describe('TranslationAPI', () => {
     no: ['oversettelse'],
   };
 
-  afterEach(() => fetchMock.restore());
+  afterEach(() => {
+    fetchMock.restore()
+  });
 
   it('should initialize with opts', () => {
     assert.equal(translation.url, API_URL);
@@ -124,7 +125,7 @@ describe('TranslationAPI', () => {
     });
   });
 
-  xdescribe('Real API', () => {
+  describe.skip('Real API', () => {
     beforeEach(() => {
       fetchMock.config.fallbackToNetwork = 'always';
     });

@@ -1,6 +1,6 @@
-import { Translations } from './Branch';
-import { ISO_639_1 } from './utils/iso_639_1';
-import { WordTranslations } from './Tree';
+import { Translations } from './Branch.js';
+import { ISO_639_1 } from './utils/iso_639_1.js';
+import { WordTranslations } from './Tree.js';
 
 export type { ISO_639_1 };
 

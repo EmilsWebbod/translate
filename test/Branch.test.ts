@@ -1,11 +1,11 @@
-import { assert } from 'chai';
+import { afterEach, assert, beforeEach, describe, it } from 'vitest';
 import * as fetchMock from 'fetch-mock';
 
-import Branch from '../src/Branch';
-import Empty from '../src/Empty';
-import { ISO_639_1, TranslationApi } from '../src/TranslationApi';
-import { mockApiUrl, mockTranslationAbc } from './mocks/apiTranslations';
-import type { WordTranslations } from '../src';
+import Branch from '../src/Branch.js';
+import Empty from '../src/Empty.js';
+import { ISO_639_1, TranslationApi } from '../src/TranslationApi.js';
+import { mockApiUrl, mockTranslationAbc } from './mocks/apiTranslations.js';
+import type { WordTranslations } from '../src/index.js';
 
 const words: WordTranslations = {
   Abc: {},
@@ -23,7 +23,9 @@ describe('Branch word', () => {
     Object.keys(words).map((k) => branch.add(k));
   });
 
-  afterEach(() => fetchMock.restore());
+  afterEach(() => {
+    fetchMock.restore()
+  });
 
   it('should be a class', () => {
     assert.isTrue(Branch instanceof Object);

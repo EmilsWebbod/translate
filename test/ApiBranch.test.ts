@@ -1,18 +1,20 @@
-import { assert } from 'chai';
+import { assert, describe, it, afterEach } from 'vitest';
 import * as fetchMock from 'fetch-mock';
 import {
   mockApiUrl,
   mockTranslation,
   mockTranslations,
-} from './mocks/apiTranslations';
-import Branch from '../src/Branch';
-import Empty from '../src/Empty';
-import { API_URL } from './mocks/utils';
+} from './mocks/apiTranslations.js';
+import Branch from '../src/Branch.js';
+import Empty from '../src/Empty.js';
+import { API_URL } from './mocks/utils.js';
 
 describe('ApiBranch', () => {
   const branch = new Branch(0, mockTranslations[1].value);
 
-  afterEach(() => fetchMock.restore());
+  afterEach(() => {
+    fetchMock.restore()
+  });
 
   it('should get from api', async () => {
     fetchMock.get(mockApiUrl('hello', 'en', 'en,nb'), mockTranslation);

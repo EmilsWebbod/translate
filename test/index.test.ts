@@ -1,9 +1,9 @@
-import { assert } from 'chai';
-import type { TranslateOptions } from '../src';
-import Branch from '../src/Branch';
-import { texts, words } from './mocks';
-import Empty from '../src/Empty';
-import Translate from '../src/Translate';
+import { assert, beforeEach, describe, it } from 'vitest';
+import type { TranslateOptions } from '../src/index.js';
+import Branch from '../src/Branch.js';
+import { texts, words } from './mocks/index.js';
+import Empty from '../src/Empty.js';
+import Translate from '../src/Translate.js';
 
 const defaultOptions: TranslateOptions = {
   defaultLocale: 'en',
