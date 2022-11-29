@@ -1,10 +1,6 @@
 import { assert, describe, it, afterEach } from 'vitest';
-import * as fetchMock from 'fetch-mock';
-import {
-  mockApiUrl,
-  mockTranslation,
-  mockTranslations,
-} from './mocks/apiTranslations.js';
+import fetchMock from 'fetch-mock';
+import { mockApiUrl, mockTranslation, mockTranslations } from './mocks/apiTranslations.js';
 import Branch from '../src/Branch.js';
 import Empty from '../src/Empty.js';
 import { API_URL } from './mocks/utils.js';
@@ -13,7 +9,7 @@ describe('ApiBranch', () => {
   const branch = new Branch(0, mockTranslations[1].value);
 
   afterEach(() => {
-    fetchMock.restore()
+    fetchMock.restore();
   });
 
   it('should get from api', async () => {
@@ -28,7 +24,7 @@ describe('ApiBranch', () => {
     fetchMock.get(
       mockApiUrl('hello', 'en', 'en,en'),
       { status: 404, message: 'notFound' },
-      { response: { status: 404 } }
+      { response: { status: 404 } },
     );
     const empty = branch.find('hello') as Empty;
     assert.isTrue(empty instanceof Empty);

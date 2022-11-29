@@ -1,5 +1,5 @@
 import { afterEach, assert, beforeEach, describe, it } from 'vitest';
-import * as fetchMock from 'fetch-mock';
+import fetchMock from 'fetch-mock';
 
 import Empty from '../src/Empty.js';
 import Branch from '../src/Branch.js';
@@ -22,7 +22,7 @@ describe('Empty', () => {
   });
 
   afterEach(() => {
-    fetchMock.restore()
+    fetchMock.restore();
   });
 
   it('should be class and created with branch', () => {
@@ -50,10 +50,7 @@ describe('Empty', () => {
     const found = branch.find('abg');
     if (found instanceof Empty) {
       const suggestions = found.suggestions();
-      assert.equal(
-        suggestions.map((x) => x.word).join(', '),
-        'abc, abd, abe, abf'
-      );
+      assert.equal(suggestions.map((x) => x.word).join(', '), 'abc, abd, abe, abf');
     }
   });
 
@@ -90,10 +87,7 @@ describe('Empty tree', () => {
     const found = tree.word('wasd');
     if (found instanceof Empty) {
       const suggestions = found.suggestions();
-      assert.equal(
-        suggestions.map((x) => x.word).join(', '),
-        'Test, Tent, Awesome, Awkward, Cool'
-      );
+      assert.equal(suggestions.map((x) => x.word).join(', '), 'Test, Tent, Awesome, Awkward, Cool');
     } else {
       assert.fail();
     }

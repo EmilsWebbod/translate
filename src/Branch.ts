@@ -22,10 +22,7 @@ export interface TranslationAddOptions {
   packageName?: string | null; // null is root package
 }
 
-export type TranslationExportFilter = Pick<
-  TranslationAddOptions,
-  'packageName'
->;
+export type TranslationExportFilter = Pick<TranslationAddOptions, 'packageName'>;
 
 const FILTER_STACK_PATHS = /(Branch|Tree|Translate)\./;
 const FILTER_STACK_TRANS = /Translate._branch/;
@@ -41,19 +38,13 @@ export default class Branch extends ApiBranch {
     word: string,
     public sentence: boolean = false,
     translations: Translations = {},
-    opts: TranslationAddOptions = {}
+    opts: TranslationAddOptions = {},
   ) {
     super(getWord(level, word, sentence));
     const char = this.getNextCharacter(word);
 
     if (char) {
-      this.words[char] = new Branch(
-        this.level + 1,
-        word,
-        sentence,
-        translations,
-        opts
-      );
+      this.words[char] = new Branch(this.level + 1, word, sentence, translations, opts);
     } else {
       this.translations = translations;
       this.init(opts);
@@ -66,11 +57,7 @@ export default class Branch extends ApiBranch {
     this.packageName = opts?.packageName || null;
   }
 
-  public add(
-    newWord: string,
-    translations?: Translations,
-    opts: TranslationAddOptions = {}
-  ) {
+  public add(newWord: string, translations?: Translations, opts: TranslationAddOptions = {}) {
     if (this.match(newWord)) {
       if (!this.isWord) {
         this.translations = { ...this.translations, ...translations };
@@ -86,13 +73,7 @@ export default class Branch extends ApiBranch {
     if (this.words[char]) {
       this.words[char].add(newWord, translations, opts);
     } else {
-      this.words[char] = new Branch(
-        this.level + 1,
-        newWord,
-        this.sentence,
-        translations,
-        opts
-      );
+      this.words[char] = new Branch(this.level + 1, newWord, this.sentence, translations, opts);
     }
 
     return true;
@@ -106,22 +87,18 @@ export default class Branch extends ApiBranch {
     if (this.matchWord(word)) {
       const error = new Error();
       if (error && error.stack) {
-        try {
-          const pathArr = error.stack.split('\n');
-          const filterPaths = pathArr.filter((x) => !x.match(FILTER_STACK_PATHS));
-          const paths = filterPaths.slice(1).map((x) => x.split('at ')[1] || '');
+        const pathArr = error.stack.split('\n');
+        const filterPaths = pathArr.filter((x) => !x.match(FILTER_STACK_PATHS));
+        const paths = filterPaths.slice(1).map((x) => x.split('at ')[1] || '');
+        if (paths[0]) {
           const file = paths[0].split(' ')[0];
-          const isTranslations = !pathArr.some((x) =>
-            x.match(FILTER_STACK_TRANS)
-          );
+          const isTranslations = !pathArr.some((x) => x.match(FILTER_STACK_TRANS));
           if (isTranslations && this.usageStack.every((x) => x.file !== file)) {
             this.usageStack.push({
               file,
               stack: filterPaths.join('\n'),
             });
           }
-        } catch (e) {
-          console.error('Stack error', error);
         }
       }
       return this.isWord ? this : new Empty(this, word, this.sentence);
@@ -185,10 +162,7 @@ export default class Branch extends ApiBranch {
     if (!filter) {
       return true;
     }
-    if (
-      typeof filter.packageName === 'undefined' ||
-      filter.packageName === this.packageName
-    ) {
+    if (typeof filter.packageName === 'undefined' || filter.packageName === this.packageName) {
       return true;
     }
     return false;
@@ -233,8 +207,6 @@ export default class Branch extends ApiBranch {
   }
 
   private matchWord(newWord: string) {
-    return this.sentence
-      ? this.word.toLocaleLowerCase() === newWord.toLocaleLowerCase()
-      : this.word === newWord;
+    return this.sentence ? this.word.toLocaleLowerCase() === newWord.toLocaleLowerCase() : this.word === newWord;
   }
 }

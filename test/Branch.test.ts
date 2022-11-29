@@ -1,5 +1,5 @@
 import { afterEach, assert, beforeEach, describe, it } from 'vitest';
-import * as fetchMock from 'fetch-mock';
+import fetchMock from 'fetch-mock';
 
 import Branch from '../src/Branch.js';
 import Empty from '../src/Empty.js';
@@ -24,7 +24,7 @@ describe('Branch word', () => {
   });
 
   afterEach(() => {
-    fetchMock.restore()
+    fetchMock.restore();
   });
 
   it('should be a class', () => {
@@ -99,7 +99,7 @@ describe('Branch word', () => {
       { nb: 'Abcde' },
       {
         packageName: 'npm-package-name',
-      }
+      },
     );
     const b = branch.find('Abcde');
     if (b instanceof Branch) {
@@ -116,7 +116,7 @@ describe('Branch word', () => {
       { nb: 'Abcde' },
       {
         packageName,
-      }
+      },
     );
     const exported = branch.export({ packageName });
     assert.hasAllKeys(exported, ['Abcde']);
@@ -185,9 +185,7 @@ describe('Branch word', () => {
       const word = branch.find(key);
       const translations = await word.fromApi('nb', languages);
       if (word instanceof Branch) {
-        word.addTranslations(
-          TranslationApi.parseTranslations(translations, languages)
-        );
+        word.addTranslations(TranslationApi.parseTranslations(translations, languages));
       }
 
       const translation = word.translate('en');

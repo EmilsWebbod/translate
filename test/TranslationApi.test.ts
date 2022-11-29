@@ -1,12 +1,8 @@
 import { afterEach, beforeEach, assert, describe, it } from 'vitest';
-import * as fetchMock from 'fetch-mock';
+import fetchMock from 'fetch-mock';
 
 import { ISO_639_1, TranslationApi } from '../src/TranslationApi';
-import {
-  mockApiUrl,
-  mockTranslation,
-  mockTranslations, translation,
-} from './mocks/apiTranslations';
+import { mockApiUrl, mockTranslation, mockTranslations, translation } from './mocks/apiTranslations';
 import { API_URL } from './mocks/utils';
 import Tree from '../src/Tree';
 import { texts, words } from './mocks';
@@ -21,7 +17,7 @@ describe('TranslationAPI', () => {
   };
 
   afterEach(() => {
-    fetchMock.restore()
+    fetchMock.restore();
   });
 
   it('should initialize with opts', () => {
@@ -78,10 +74,7 @@ describe('TranslationAPI', () => {
 
   it('should put translation', async () => {
     try {
-      fetchMock.put(
-        `${API_URL}/translations/${mockTranslation._id}`,
-        mockTranslation
-      );
+      fetchMock.put(`${API_URL}/translations/${mockTranslation._id}`, mockTranslation);
       const res = await translation.put(mockTranslation._id, postData);
       assert.isObject(res);
       assert.deepEqual(res, mockTranslation);
@@ -96,11 +89,7 @@ describe('TranslationAPI', () => {
       const tree = new Tree({ words, texts });
       const treeWords = tree.exportWords();
       const treeTexts = tree.exportTexts();
-      const res = await translation.createOrUpdate(
-        'test',
-        treeWords,
-        treeTexts
-      );
+      const res = await translation.createOrUpdate('test', treeWords, treeTexts);
       assert.isObject(res);
     } catch (e: any) {
       assert.fail(e.message);
@@ -115,10 +104,7 @@ describe('TranslationAPI', () => {
     });
 
     it('should parse translations', () => {
-      const transformed = TranslationApi.parseTranslations(mockTranslation, [
-        'en',
-        'nb',
-      ]);
+      const transformed = TranslationApi.parseTranslations(mockTranslation, ['en', 'nb']);
       assert.deepEqual(transformed, {
         nb: 'hei',
       });
